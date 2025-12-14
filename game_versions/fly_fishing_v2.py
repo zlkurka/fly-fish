@@ -146,6 +146,20 @@ def get_game(location):
             print('Invalid location!')
             return None
         
+def get_price(fish):
+    
+    prices = {
+        'brown trout': 10,
+        'smallmouth bass': 20,
+        'muskellunge': 50,
+        'coho salmon': 15,
+        'steelhead': 30,
+        'common': 5,
+        'uncommon': 10,
+        'rare': 20
+    }
+    return prices.get(fish, 0)
+        
 def main():
 
     flies = ['white']
@@ -196,7 +210,35 @@ def main():
                 print('Implementing soon!')
             
             case 'Sell fish':
-                print('Implementing soon!')
+                
+                if not fish:
+                    print("You don't have any fish to sell!")
+                else:
+                    fish_counted = Counter(fish)
+                    print('You have:')
+                    prices = {}
+                    for fsh in fish_counted:
+                        price = get_price(fsh)
+                        prices[fsh] = price
+                        print(f'- {fish_counted[fsh]} {fsh} (${price} each)')
+                    
+                    sell_options = list(fish_counted.keys()) + ['Sell all']
+                    selection = menu(sell_options, 'Which fish would you like to sell?')
+                    
+                    if selection == 'Sell all':
+                        total = 0
+                        for fsh, count in fish_counted.items():
+                            total += count * prices[fsh]
+                        fish.clear()
+                        money += total
+                        print(f'You sold all your fish for ${total}!')
+                    else:
+                        count = fish_counted[selection]
+                        price = prices[selection]
+                        total = count * price
+                        fish = [f for f in fish if f != selection]
+                        money += total
+                        print(f'You sold {count} {selection} for ${total}!')
             
             case 'Change fly':
                 fly = menu(flies,'What fly would you like to use?')
@@ -210,5 +252,3 @@ def main():
                 print('Invalid option!')
 
 main()
-
-# Add sake powerup
