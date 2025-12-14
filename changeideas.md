@@ -1,38 +1,61 @@
 # Ideas for future changes
 ## Modifications
-### Sorted inventory
-- Categories for fish, powerups, materials, etc.
-- Displays money.
-### Main menu
-- Only display options that are possible for player (e.g., no travel option if player only has one location unlocked).
-- Merge shop and sell fish into Market.
-### Go Fishing
-- Move "change fly" option from main menu.
 ### Inventory
-- Make flies global?
+- Categories for fish, powerups, materials, etc.
+- Display `money`.
+- Inventory could be a dictionary I toss around between funcs.
+- Make flies global? I could also include the selected `fly` in `flies`.
+### Main menu
+- Only display options that are possible for player (e.g., no travel option if player only has one `location` unlocked).
+### Fishing
+- Move **Change fly** option from main menu. Options in menu: [RETURN] to cast, "A" to change fly, "B" for powerups, and "C" to leave.
+- Merge `get_odds`, `get_time`,and `get_game` into main func?
+### Market
+- Fix **Sell all** fish
+- Variability in sell-prices (proportional or within a range).
+- Location-based sell-price variability.
 ## Additions
 ### Market
 What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 #### Buying
 - Randomly determine what is in stock (location-based).
 - Can buy other fish?
-#### Selling
-- Uses dictionary to match fish to prices.
-- "Sell all" option.
-- Variability in sell-prices (proportional or within a range).
-- Location-based sell-price variability.
 ### Powerups
-- Add powerups option to Go Fish.
-- Sake: increases "fishing power".
-- Will probably need to be global.
+Will probably need to be global.
+- Add powerups option to `go_fishing`.
+- **Sake**: increases "fishing power" (`odds`?).
+- **Coffee grounds**: throw into the water to make fish faster, decreases `cast_time` (make sure can't go below zero).
+- **Gold flakes**: increase fish tier by 1 (allows super rare catches).
+- **Dissolving melatonin**: makes fish sleepy (more able to catch with a net?).
 ### Crafting
-- Can craft fish into other items (flies, powerups, etc.).
+- Can craft **fish** into other items (**flies**, **powerups**, etc.).
+### Minigames
+#### Dangerous fish
+- May need items to defend against some fish.
+- If you're farming for something and keep catching small but dangerous fish, I don't want you to have to play a minigame over and over. Maybe I could do something similar to "He is Coming" where it's an autobattler and you can just skip the encounter and get the outcomes.
+#### Go Fish
+- You receive around 5 fish from the current location pool, then trade off asking each other for fish. If the other player does not have a matching fish, do one **Fishing** cycle.
 ### Story
+My vision for the point-and-click version has a horror undertone involving monsters of the deep and such. I'd like to incorporate some of that here.
+#### Locations
+I currently have two locations: **The Dells** and **Chicago**. However, it might be cool to have different locations around a certain area (a river, a lake), so you can still return to the same **Market** and develop relationships (or at least familiarity) with the NPCs. 
 #### NPCs
-- The Fisherman.
+- **The Fisherman**: 
+  - This character was the main inspiration for this game. I had an idea for a diaglogue-based RPG with three characters who would die soon. My favorite was the fisherman, so I decided to design a game specifically for him.
+  - The Fisherman is the father or father-figure of the main character.
+- The Fishmonger
+  - Can buy **fish** from him, which seems useless at first.
+  - Eventually, you unlock the ability to play **Go Fish**.
+  - Taking design inspo from the underscores album would be funny.
 - Market NPCs.
-- The Fishmonger? (taking design inspo from the underscores album would be funny).
+
 Would need to be location-based.
 ### Minigames
-- Go-fish.
+- Go-fish (maybe could play with the Fishmonger).
 - A dungeon-crawler (it would be funny).
+# Next steps
+## Market
+- Fix **Sell all** fish.
+- Buy template items.
+## Powerups
+- Add **Sake** and **Coffee grounds**.
