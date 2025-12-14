@@ -39,7 +39,6 @@ def go_fish(fly,location):
 
     odds = get_odds(fly)
     cast_time = get_time(fly)
-
     game = get_game(location)
     
     print(f'At {location}, you attach your {fly} fly to your fishing line and wade into the water.')
@@ -210,5 +209,3 @@ def main():
                 print('Invalid option!')
 
 main()
-
-# Add sake powerup
