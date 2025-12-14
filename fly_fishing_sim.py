@@ -33,7 +33,7 @@ def menu(options, menu_text):
         else:
             return options[selection_num]
         
-def go_fish(fly,location):
+def go_fishing(fly,location):
     
     fish_caught = []
 
@@ -171,14 +171,14 @@ def main():
             fish.extend(get_game(locat))
         money = 999
 
-    fish.extend(go_fish(fly,location))
+    fish.extend(go_fishing(fly,location))
     
     # Main menu
     while True:
         match menu(main_menu_opts, 'What would you like to do?'):
             
             case 'Go fishing':
-                fish.extend(go_fish(fly,location))
+                fish.extend(go_fishing(fly,location))
             
             case 'See what fish you have':
                 
