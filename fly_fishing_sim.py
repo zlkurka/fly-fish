@@ -188,14 +188,14 @@ def main():
     if input('Press [ENTER] to go fishing.') == 'dev':
         inventory.dev_mode()
     else:
-        go_fishing(inventory)
+        inventory = go_fishing(inventory)
     
     # Main menu
     while True:
         match menu(main_menu_opts, 'What would you like to do?'):
             
             case 'Go fishing':
-                go_fishing(inventory)
+                inventory = go_fishing(inventory)
             
             case 'See what fish you have':
                 inventory.see_fish('You have:')
