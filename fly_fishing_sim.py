@@ -1,7 +1,8 @@
-from time import sleep
 from random import randint
-from string import ascii_uppercase
 from collections import Counter
+from time import sleep
+from inventory import Inventory
+from flexible_menu import menu
 
 main_menu_opts = ['Go fishing',
                   'See what fish you have',
@@ -9,40 +10,16 @@ main_menu_opts = ['Go fishing',
                   'Change fly',
                   'Travel']
 
-def menu(menu_text, options):
-
-    # Printing menu
-    print(menu_text)
-    for item_num in range(len(options)):
-        print(f'{list(ascii_uppercase)[item_num]}) {str(options[item_num]).capitalize()}')
-        # Will print like "A) Brown trout"
-
-    # Taking input and translating to list item
-    while True:
-
-        selection = input().upper().strip()
-        selection_num = list(ascii_uppercase).index(selection)
-
-        if selection not in list(ascii_uppercase):
-            print('Invalid input! Enter only the letter corresponding to your selection.')
-        
-        elif selection_num > len(options) - 1:
-            print('Invalid input! This letter does not correspond to an option.')
-        
-        else:
-            return options[selection_num]
-        
-
-def go_fishing(fly,location):
+def go_fishing(inventory):
     
     fish_caught = []
 
-    odds = get_odds(fly)
-    cast_time = get_time(fly)
-    game = get_game(location)
+    odds = inventory.get_odds()
+    cast_time = inventory.get_time()
+    game = inventory.get_game()
     
-    print(f'At {location}, you attach your {fly} fly to your fishing line and wade into the water.')
-    print(f'Press [RETURN] to cast with your {fly} fly, or enter "LEAVE" to leave.')
+    print(f'At {inventory.location}, you attach your {inventory.fly} fly to your fishing line and wade into the water.')
+    print(f'Press [RETURN] to cast, or enter "LEAVE" to leave.')
 
     while True:
         
@@ -50,7 +27,7 @@ def go_fishing(fly,location):
         if input().upper().strip() == 'LEAVE':
             break
 
-        print(f'You cast your line with your {fly} fly!')
+        print(f'You cast your line with your {inventory.fly} fly!')
     
         casting_time = cast_time[0] + randint(-1 * cast_time[1],cast_time[1])
 
@@ -84,20 +61,30 @@ def go_fishing(fly,location):
             print("It was just some seaweed.")
     
     # Display fish caught
-    see_fish(fish_caught, 'You caught: ',"You didn't catch anything")
-    
-    return fish_caught
+    if not fish:
+        print("You didn't catch anything")
+
+    else: 
+        fish_counted = Counter(fish_caught)
+
+        print('You caught:')
+        for fsh in fish_counted:
+            print(f'- {fish_counted[fsh]} {fsh}')
+
+    inventory.add_fish(fish_counted)
+
+    return inventory
 
 
-def market(money):
+def market(inventory):
     
     print('Welcome to the market!')
     while True: 
-        match menu('What would you like to do?', ['Visit shops','Sell fish','Leave']):
+        match menu(['Visit shops','Sell fish','Leave'],'What would you like to do?'):
             
             case 'Visit shops':
                 while True: 
-                    match menu('Who would you like to visit?',['Template','Drink Lady','Fishmonger']):
+                    match menu(['Template','Drink Lady','Fishmonger'],'Who would you like to visit?'):
                         
                         case 'Template':
                             print('Implementing soon!')
@@ -112,64 +99,75 @@ def market(money):
                             print('Invalid option!')
             
             case 'Sell fish':  
-                
-                print("\nHere are today's prices:")
-                for fsh in list(set(fish)):
-                    print(f'- {fsh}: ${get_value(fsh)}')
 
                 while True:
                     
                     fish_menu = {}
                     sell_opts = []
+                    
+                    # Updating menu to include prices and the number of each fish you have
+                    for fsh in inventory.fish:
 
-                    fish_counted = Counter(fish)
-                    for fsh in fish_counted:
-
-                        menu_key = f'{fsh} ({fish_counted[fsh]}x, ${get_value(fsh)} each)'
+                        menu_key = f'{fsh} ({inventory.fish[fsh]}x, ${inventory.get_value(fsh)} each)'
 
                         fish_menu.update({menu_key:fsh})
                         sell_opts.append(menu_key)
                         
                     sell_opts.extend(['Sell all', None])
 
-                    sell_fish_selec = menu('What would you like to sell?', sell_opts)
+                    sell_fish_selec = menu(sell_opts, 'What would you like to sell?')
                     
+
                     if sell_fish_selec:
                         
+                        # Sell all
                         if sell_fish_selec == 'Sell all':
                             
-                            add_money = 0
-                            for fsh in fish:
-                                fish.remove(fsh)
-                                add_money += get_value(fsh)
-                            
-                            money += add_money
-                            print(f'You sold all your fish for ${add_money}')
-                            # Sold all as dev, it left behind 1 smallmouth, 1 brown trout, 1 steelhead, and 1 uncommon. Strange
+                            money_added = 0
+                            for fsh in inventory.fish:
+                                
+                                fish_worth = fsh.get(list(fsh)[0]) * inventory.get_price(fsh)
+                                money_added += fish_worth
 
+                                inventory.change_money(fish_worth)
+                                fsh.remove_fish(fsh)
+
+                            if inventory.fish:
+                                print('Failed to remove all fish!')
+
+                            print(f'You sold all your fish for ${money_added}')
+
+                        # Particular fish selected
                         while sell_fish_selec != 'Sell all':
                             
                             sell_fish = fish_menu.get(sell_fish_selec)
 
                             try: 
-                                sell_num = int(input(f'How many {sell_fish} would you like to sell? (up to {fish.count(sell_fish)})\n'))
+                                sell_num = int(input(f'How many {sell_fish} would you like to sell? (up to {inventory.fish.get(sell_fish)})\n'))
                                 
-                                if sell_num > fish.count(sell_fish):
+                                if sell_num > inventory.fish.get(sell_fish):
                                     print("That's more than you have!")
                                 
                                 else:
                                     
-                                    for num in range(sell_num):
-                                        fish.remove(sell_fish)
-                                    money += get_value(sell_fish) * sell_num
+                                    fish_worth = inventory.fish.get(sell_fish_selec) * inventory.get_value(sell_fish_selec)
+                                    fsh.get(list(fsh)[0]) * inventory.get_price(fsh)
 
-                                    print(f'You sold {sell_num} {sell_fish} for ${get_value(sell_fish) * sell_num}.')
+                                    inventory.change_money(fish_worth)
+                                    fsh.remove_fish(sell_fish_selec)
+
+                                    for num in range(sell_num):
+                                        inventory.remove_fish(sell_fish)
+                                    money += inventory.get_value(sell_fish) * sell_num
+
+                                    print(f'You sold {sell_num} {sell_fish} for ${inventory.get_value(sell_fish) * sell_num}.')
 
                                     break
 
                             except ValueError:
                                 print('Input only an integer (ex: 1)')
-
+                    
+                    # None option
                     else: 
                         print(f'You now have ${money}')
                         break
@@ -181,139 +179,37 @@ def market(money):
                 print('Invalid option!')
 
 
-def see_fish(fish, *text):
-
-    if not fish:
-        try: 
-            print(text[1])
-        except IndexError:
-            print("You don't have any fish!")
-
-    else: 
-        fish_counted = Counter(fish)
-
-        print(text[0])
-        for fsh in fish_counted:
-            print(f'- {fish_counted[fsh]} {fsh}')
-
-
-def get_time(fly):
-    
-    fly_times = {
-        
-        # [0] = base time, +/- a randint beteen -1*[1] and [1]
-
-        'white': [10,4],
-        'red': [15,5],
-        'gold': [7,3],
-
-        'dev': [2,0],
-        'dev_shit': [2,0],
-    }
-    return fly_times.get(fly, 0)
-
-
-def get_odds(fly):
-    
-    fly_odds = {
-        
-        # [0]% chance to catch a common fish, [1]% chance for uncommon, [2]% for rare
-
-        'white': [20,30,35],
-        'red': [10,20,40],
-        'gold': [50,70,80],
-
-        'dev': [33,66,100],
-        'dev_shit': [0,1,2],
-    }
-    return fly_odds.get(fly, 0)
-
-
-def get_game(location):
-    
-    fish_pools = {
-        'the dells': ['brown trout','smallmouth bass','muskellunge'],
-        'chicago': ['brown trout','coho salmon','steelhead'],
-        'dev': ['common','uncommon','rare']
-    }
-    
-    return fish_pools.get(location, 0)
-
-
-def get_value(fish):
-    
-    fish_values = {
-        
-        # Common fish
-        'common': 5,
-        'brown trout': 5,
-        
-        # Uncommon fish
-        'uncommon': 7,
-        'smallmouth bass': 7,
-        'coho salmon': 8,
-
-        # Rare fish
-        'rare': 15,
-        'muskellunge': 13, 
-        'steelhead': 16,
-        
-    }
-
-    return fish_values.get(fish, 0)
-    
-
 def main():
-
-    flies = ['white']
-    locations = ['the dells']
-
-    global fish
-    fish = []
-
-    money = 0
-
-    fly = flies[0]
-    location = locations[0]
+    
+    inventory = Inventory()
 
     # First fishing
     print('Welcome to fly fishing simulator!')
     if input('Press [ENTER] to go fishing.') == 'dev':
-        
-        # Optional dev mode
-
-        flies = ['white','red','gold','dev','dev_shit']
-        locations = ['the dells','chicago','dev']
-
-        fly = 'dev'
-        location = 'dev'
-
-        for locat in locations:
-            fish.extend(get_game(locat))
-        money = 999
-
-    fish.extend(go_fishing(fly,location))
+        inventory.dev_mode()
+    else:
+        go_fishing(inventory)
     
     # Main menu
     while True:
-        match menu('What would you like to do?', main_menu_opts):
+        match menu(main_menu_opts, 'What would you like to do?'):
             
             case 'Go fishing':
-                fish.extend(go_fishing(fly,location))
+                go_fishing(inventory)
             
             case 'See what fish you have':
-                see_fish(fish, 'You have: ')
+                inventory.see_fish('You have:')
 
             case 'Go to the market':
-                market(money)
+                market(inventory)
             
             case 'Change fly':
-                fly = menu('What fly would you like to use?', flies)
-                print(f'You are now using your {fly} fly!')
+                inventory.change_fly()
+                print(f'You are now using your {inventory.fly} fly!')
             
             case 'Travel':
-                location = menu('Where would you like to go?', locations)
-                print(f'You are now at {location}!')
+                # location = menu(inventory.locations, 'Where would you like to go?')
+                print(f'You are now at {inventory.location}!')
             
             case _: 
                 print('Invalid option!')
