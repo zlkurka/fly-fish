@@ -1,17 +1,12 @@
 # Ideas for future changes
 ## Modifications
 ### Inventory
-- Categories for fish, powerups, materials, etc.
-- Display `money`.
-- Inventory could be a dictionary I toss around between funcs.
-- Make flies global? I could also include the selected `fly` in `flies`.
+- Add options to display `flies`, `locations`.
 ### Main menu
 - Only display options that are possible for player (e.g., no travel option if player only has one `location` unlocked).
 ### Fishing
 - Move **Change fly** option from main menu. Options in menu: [RETURN] to cast, "A" to change fly, "B" for powerups, and "C" to leave.
-- Merge `get_odds`, `get_time`,and `get_game` into main func?
 ### Market
-- Fix **Sell all** fish
 - Variability in sell-prices (proportional or within a range).
 - Location-based sell-price variability.
 ## Additions
@@ -43,11 +38,13 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
 - **The Fisherman**: 
   - This character was the main inspiration for this game. I had an idea for a diaglogue-based RPG with three characters who would die soon. My favorite was the fisherman, so I decided to design a game specifically for him.
   - The Fisherman is the father or father-figure of the main character.
-- The Fishmonger
-  - Can buy **fish** from him, which seems useless at first.
-  - Eventually, you unlock the ability to play **Go Fish**.
+- **The Fishmonger**
+  - Can buy **fish** from him, which seems useless at first
+  - Secret: can eventually unlock the ability to play **Go Fish** with him. I'll need to make the Fishmonger interesting enough to encourage players to interact with him.
   - Taking design inspo from the underscores album would be funny.
-- Market NPCs.
+- **The Drink Lady**
+  - This is a filler name for an NPC who will sell **Sake** and **Coffee grounds**, and maybe some other powerups. I need to figure out who and how I want her to be.
+- Other market NPCs.
 
 Would need to be location-based.
 ### Minigames
@@ -55,7 +52,7 @@ Would need to be location-based.
 - A dungeon-crawler (it would be funny).
 # Next steps
 ## Market
-- Fix **Sell all** fish.
 - Buy template items.
+- Clean up code for selling (simplify variables, revisit organization)
 ## Powerups
 - Add **Sake** and **Coffee grounds**.

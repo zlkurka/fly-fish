@@ -98,82 +98,86 @@ def market(inventory):
                         case _: 
                             print('Invalid option!')
             
-            case 'Sell fish':  
 
+            case 'Sell fish':  
                 while True:
                     
+                    # Creating sell menu
                     fish_menu = {}
                     sell_opts = []
                     
-                    # Updating menu to include prices and the number of each fish you have
-                    for fsh in inventory.fish:
+                    for sell_fish in inventory.fish:
 
-                        menu_key = f'{fsh} ({inventory.fish[fsh]}x, ${inventory.get_value(fsh)} each)'
+                        menu_key = f'{sell_fish} ({inventory.fish[sell_fish]}x, ${inventory.get_value(sell_fish)} each)'
 
-                        fish_menu.update({menu_key:fsh})
+                        fish_menu.update({menu_key:sell_fish})
                         sell_opts.append(menu_key)
                         
                     sell_opts.extend(['Sell all', None])
 
-                    sell_fish_selec = menu(sell_opts, 'What would you like to sell?')
+                    sell_select = menu(sell_opts, 'What would you like to sell?')
                     
-
-                    if sell_fish_selec:
-                        
-                        # Sell all
-                        if sell_fish_selec == 'Sell all':
-                            
-                            money_added = 0
-                            for fsh in inventory.fish:
-                                
-                                fish_worth = fsh.get(list(fsh)[0]) * inventory.get_price(fsh)
-                                money_added += fish_worth
-
-                                inventory.change_money(fish_worth)
-                                fsh.remove_fish(fsh)
-
-                            if inventory.fish:
-                                print('Failed to remove all fish!')
-
-                            print(f'You sold all your fish for ${money_added}')
-
-                        # Particular fish selected
-                        while sell_fish_selec != 'Sell all':
-                            
-                            sell_fish = fish_menu.get(sell_fish_selec)
-
-                            try: 
-                                sell_num = int(input(f'How many {sell_fish} would you like to sell? (up to {inventory.fish.get(sell_fish)})\n'))
-                                
-                                if sell_num > inventory.fish.get(sell_fish):
-                                    print("That's more than you have!")
-                                
-                                else:
-                                    
-                                    fish_worth = inventory.fish.get(sell_fish_selec) * inventory.get_value(sell_fish_selec)
-                                    fsh.get(list(fsh)[0]) * inventory.get_price(fsh)
-
-                                    inventory.change_money(fish_worth)
-                                    fsh.remove_fish(sell_fish_selec)
-
-                                    for num in range(sell_num):
-                                        inventory.remove_fish(sell_fish)
-                                    money += inventory.get_value(sell_fish) * sell_num
-
-                                    print(f'You sold {sell_num} {sell_fish} for ${inventory.get_value(sell_fish) * sell_num}.')
-
-                                    break
-
-                            except ValueError:
-                                print('Input only an integer (ex: 1)')
+                    # Selling
                     
-                    # None option
-                    else: 
-                        print(f'You now have ${money}')
+                    # None
+                    if not sell_select:
+                        print(f'You now have ${inventory.money}')
                         break
+                    
+                    # Sell all
+                    if sell_select == 'Sell all':
+                        
+                        money_added = 0
+
+                        for sell_fish in list(inventory.fish):
+                            
+                            sell_num = inventory.fish.get(sell_fish)
+
+                            fish_worth = sell_num * inventory.get_value(sell_fish)
+                            money_added += fish_worth
+
+                            inventory.remove_fish({sell_fish:sell_num})
+                        
+                        inventory.change_money(money_added)
+
+                        if inventory.fish:
+                            print('Failed to remove all fish!')
+
+                        print(f'You sold all your fish for ${money_added}')
+
+                    # Particular fish selected
+                    while sell_select != 'Sell all':
+                        
+                        sell_fish = fish_menu.get(sell_select)
+                        fish_num = inventory.fish.get(sell_fish)
+
+                        try: 
+                            sell_num = int(input(f'How many {sell_fish} would you like to sell? (up to {fish_num})\n'))
+                            
+                            if sell_num == 0:
+                                print('Sale cancelled')
+                                break
+
+                            elif sell_num <= fish_num:
+
+                                fish_worth = sell_num * inventory.get_value(sell_fish)
+                                inventory.change_money(fish_worth)
+
+                                inventory.remove_fish({sell_fish:sell_num})
+
+                                print(f'You sold {sell_num} {fish_num} for ${fish_worth}.')
+
+                                break
+
+                            else:
+                                print("That's more than you have!")
+                                
+                        except ValueError:
+                            print('Input only an integer (ex: 1)')
+                    
 
             case 'Leave':
-                return money
+                return inventory
             
             case _: 
                 print('Invalid option!')
@@ -192,16 +196,27 @@ def main():
     
     # Main menu
     while True:
-        match menu(main_menu_opts, 'What would you like to do?'):
+        match menu(['Go fishing','Go to the market','Check inventory','Change fly','Travel'], 'What would you like to do?'):
             
             case 'Go fishing':
                 inventory = go_fishing(inventory)
             
-            case 'See what fish you have':
-                inventory.see_fish('You have:')
-
             case 'Go to the market':
                 market(inventory)
+
+            case 'Check inventory':
+                
+                print(f'You have ${inventory.money}')
+                match menu(['Fish','Flies','Locations','Powerups', 'Exit']):
+                    
+                    case 'Fish':
+                        inventory.see_fish('You have:')
+                    
+                    case 'Exit':
+                        continue
+
+                    case _:
+                        print('Invalid option!')
             
             case 'Change fly':
                 inventory.change_fly()

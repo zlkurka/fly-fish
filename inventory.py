@@ -151,7 +151,8 @@ class Inventory:
         }
 
         return fish_values.get(fish, 0)
-    
+
+    # Other
     def dev_mode(self):
         self.flies = ['white','red','gold','dev','dev_shit']
         self.locations = ['the dells','chicago','dev']
