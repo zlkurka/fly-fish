@@ -71,7 +71,7 @@ def go_fishing(inventory):
         for fsh in fish_counted:
             print(f'- {fish_counted[fsh]} {fsh}')
 
-    inventory.add_fish(fish_counted)
+        inventory.add_fish(fish_counted)
 
     return inventory
 
