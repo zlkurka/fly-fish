@@ -64,6 +64,7 @@ def go_fishing(inventory):
     if not fish:
         print("You didn't catch anything")
 
+
     else: 
         fish_counted = Counter(fish_caught)
 
@@ -213,7 +214,7 @@ def market(inventory):
 
                                 inventory.remove_fish({sell_fish:sell_num})
 
-                                print(f'You sold {sell_num} {fish_num} for ${fish_worth}.')
+                                print(f'You sold {sell_num} {sell_fish} for ${fish_worth}.')
 
                                 break
 

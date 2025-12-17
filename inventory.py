@@ -204,7 +204,7 @@ def testing():
 
     for num in range(5):
         inventory.add_fish({'brown trout':1})
-        print(f'You have {inventory.fish['brown trout']} brown trout')
+        print(f'You have {inventory.fish["brown trout"]} brown trout')
         input()
     inventory.see_fish('You have: ')
 
