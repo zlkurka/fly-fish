@@ -22,3 +22,45 @@ def menu(options, menu_text):
         
         else:
             return options[selection_num]
+
+def sell_menu(menu_text, items, price):
+
+    menu_legend = {}
+    sell_opts = []
+    
+    for sell_item in items:
+        
+        menu_key = f'{sell_item} ({items[sell_item]}x, ${price.get(sell_item)} each)'
+
+        menu_legend.update({menu_key:sell_item})
+        sell_opts.append(menu_key)
+        
+    sell_opts.extend(['Sell all', None])
+
+    selection = menu(sell_opts, menu_text)
+    
+    if selection == None or selection == 'Sell all':
+        return selection
+
+    return menu_legend.get(selection)
+    
+def buy_menu(menu_text, items, price):
+
+    menu_legend = {}
+    sell_opts = []
+    
+    for sell_item in items:
+        
+        menu_key = f'{sell_item} ({items[sell_item]}x, ${price[sell_item]} each)'
+
+        menu_legend.update({menu_key:sell_item})
+        sell_opts.append(menu_key)
+        
+    sell_opts.append(None)
+
+    selection = menu(sell_opts, menu_text)
+    
+    if not selection:
+        return None
+    else:
+        return menu_legend.get(selection)

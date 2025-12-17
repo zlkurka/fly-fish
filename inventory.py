@@ -104,7 +104,7 @@ class Inventory:
       
         fly_odds = {
             
-            # [0]% chance to catch a common fish, [1]% chance for uncommon, [2]% for rare
+            # [0]% chance to catch a common fish, [1]-[0]% chance for uncommon, [2]-[1]-[0]% for rare
 
             'white': [20,30,35],
             'red': [10,20,40],
@@ -118,12 +118,12 @@ class Inventory:
     def get_game(self):
       
         fish_pools = {
-            'the dells': ['brown trout','smallmouth bass','muskellunge'],
-            'chicago': ['brown trout','coho salmon','steelhead'],
+            'The Dells': ['brown trout','smallmouth bass','muskellunge'],
+            'Chicago': ['brown trout','coho salmon','steelhead'],
             'dev': ['common','uncommon','rare']
         }
         
-        return fish_pools.get(self.location, 0)
+        return fish_pools.get(self.location)
     
 
     # Shopping
@@ -151,11 +151,40 @@ class Inventory:
         }
 
         return fish_values.get(fish, 0)
+    
+    def purchase(self, buy_item, item_count, item_price):
+        while True:
+            try: 
+                
+                buy_num = int(input(f'How many {buy_item} would you like to buy? (up to {item_count})\n'))
+                
+                if buy_num == 0:
+                    print('Sale cancelled')
+                    break
+
+                elif buy_num <= item_count:
+
+                    sale_price = buy_num * item_price
+                    if sale_price > self.money:
+                        print("You don't have that much money!")
+
+                    self.change_money(-1 * sale_price)
+                    self.remove_fish({buy_item:buy_num})
+
+                    print(f'You bought {buy_num} {buy_item} for ${sale_price}.')
+
+                    return (item_count - buy_num)
+
+                else:
+                    print("That's more than are in stock!")
+                    
+            except ValueError:
+                print('Input only an integer (ex: 1)')
 
     # Other
     def dev_mode(self):
         self.flies = ['white','red','gold','dev','dev_shit']
-        self.locations = ['the dells','chicago','dev']
+        self.locations = ['The Dells','Chicago','dev']
         self.money = 999
 
         self.fly = 'dev'

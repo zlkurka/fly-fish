@@ -1,8 +1,8 @@
-from random import randint
+from random import randint, sample
 from collections import Counter
 from time import sleep
 from inventory import Inventory
-from flexible_menu import menu
+from flexible_menu import menu, sell_menu, buy_menu
 
 main_menu_opts = ['Go fishing',
                   'See what fish you have',
@@ -17,7 +17,7 @@ def go_fishing(inventory):
     odds = inventory.get_odds()
     cast_time = inventory.get_time()
     game = inventory.get_game()
-    
+
     print(f'At {inventory.location}, you attach your {inventory.fly} fly to your fishing line and wade into the water.')
     print(f'Press [RETURN] to cast, or enter "LEAVE" to leave.')
 
@@ -84,59 +84,107 @@ def market(inventory):
             
             case 'Visit shops':
                 while True: 
-                    match menu(['Template','Drink Lady','Fishmonger'],'Who would you like to visit?'):
-                        
-                        case 'Template':
-                            print('Implementing soon!')
+                    match menu(['Drink Lady','Fishmonger'],'Who would you like to visit?'):
                         
                         case 'Drink Lady':
                             print('Implementing soon!')
 
-                        case 'Fishmonger':
-                            print('Implementing soon!')
+                        case 'Fishmonger':                            
+
+                            common_fish = ['brown trout']
+                            uncommon_fish = ['smallmouth bass','coho salmon']
+                            rare_fish = ['steelhead','muskellunge']
+                            
+                            fish_options = []
+                            for iter in range(5):
+                                
+                                chance = randint(1,10)
+                                
+                                # Common
+                                if 1 <= chance < 5:
+                                    fish_options.extend(sample(common_fish,1))
+                                
+                                # Uncommon
+                                elif 5 <= chance < 10:
+                                    fish_options.extend(sample(uncommon_fish,1))
+                                
+                                # Rare
+                                elif chance == 10:
+                                    fish_options.extend(sample(rare_fish,1))
+                                
+                                else:
+                                    print('Failed to add fish')
+                                    fish_options.append('brown trout')
+
+                            fish_options = dict(Counter(fish_options))
+                            
+                            prices = {}
+                            for fsh in fish_options:
+                                if fsh in rare_fish:
+                                    prices.update({fsh:randint(7,10)})
+                                elif fsh in uncommon_fish:
+                                    prices.update({fsh:randint(7,10)})
+                                elif fsh in common_fish:
+                                    prices.update({fsh:randint(5,7)})
+                                else: 
+                                    print('Fish not found!')
+                            
+                            menu_text = 'Could I interest you in anything from my collection?'
+                            while True:
+                                sell_select = buy_menu(menu_text,fish_options,prices)
+                                if not sell_select:
+                                    print('Okay, bye-bye!')
+                                    break
+                                new_item_count = inventory.purchase(sell_select, fish_options.get(sell_select), prices.get(sell_select))
+                                
+                                if new_item_count == 0:
+                                    fish_options.pop(sell_select)
+                                    prices.pop(sell_select)
+                                else:
+                                    fish_options.update({sell_select:new_item_count})
+
+                                menu_text = 'Interested in anything else?'
                         
                         case _: 
                             print('Invalid option!')
             
 
             case 'Sell fish':  
+                
+                if not inventory.fish:
+                    print("You don't have any fish to sell!")
+                    continue
+                
                 while True:
                     
                     # Creating sell menu
-                    fish_menu = {}
-                    sell_opts = []
-                    
-                    for sell_fish in inventory.fish:
 
-                        menu_key = f'{sell_fish} ({inventory.fish[sell_fish]}x, ${inventory.get_value(sell_fish)} each)'
+                    fish_prices = {}
+                    for fsh in inventory.fish:
+                        fish_prices.update({fsh:inventory.get_value(fsh)})
 
-                        fish_menu.update({menu_key:sell_fish})
-                        sell_opts.append(menu_key)
-                        
-                    sell_opts.extend(['Sell all', None])
-
-                    sell_select = menu(sell_opts, 'What would you like to sell?')
+                    sell_fish = sell_menu('What would you like to sell?',inventory.fish,fish_prices)
                     
                     # Selling
                     
                     # None
-                    if not sell_select:
+                    if not sell_fish:
                         print(f'You now have ${inventory.money}')
                         break
                     
                     # Sell all
-                    if sell_select == 'Sell all':
+                    if sell_fish == 'Sell all':
                         
                         money_added = 0
 
-                        for sell_fish in list(inventory.fish):
+                        for fsh in list(inventory.fish):
                             
-                            sell_num = inventory.fish.get(sell_fish)
+                            sell_num = inventory.fish.get(fsh)
 
-                            fish_worth = sell_num * inventory.get_value(sell_fish)
+                            fish_worth = sell_num * inventory.get_value(fsh)
                             money_added += fish_worth
 
-                            inventory.remove_fish({sell_fish:sell_num})
+                            inventory.remove_fish({fsh:sell_num})
                         
                         inventory.change_money(money_added)
 
@@ -144,11 +192,11 @@ def market(inventory):
                             print('Failed to remove all fish!')
 
                         print(f'You sold all your fish for ${money_added}')
+                        break
 
                     # Particular fish selected
-                    while sell_select != 'Sell all':
+                    while sell_fish != 'Sell all':
                         
-                        sell_fish = fish_menu.get(sell_select)
                         fish_num = inventory.fish.get(sell_fish)
 
                         try: 
@@ -228,5 +276,6 @@ def main():
             
             case _: 
                 print('Invalid option!')
+
 
 main()
