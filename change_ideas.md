@@ -42,7 +42,7 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
   - The Fisherman is the father or father-figure of the main character.
   - He has a sort of disease-like relationship to fishing, something something horror elements. The activity takes something from him, and he passes this down to the MC (something something cancer allegory).
 - **The Fishmonger**
-  - Can buy **fish** from him, which seems useless at first, but these fish have a chance to contain special crafting materials.
+  - Can buy **fish** from him, which seems useless at first. However, there is a chance to buy a "suspicious" variant of any fish, which contains special crafting materials.
   - Secret: can eventually unlock the ability to play **Go Fish** with him. I'll need to make the Fishmonger interesting enough to encourage players to interact with him.
   - Taking design inspo from the underscores album would be funny.
 - **The Drink Lady**

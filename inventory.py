@@ -1,24 +1,24 @@
 from string import ascii_uppercase
 from collections import Counter
 from flexible_menus import menu
+from enums import Fish, Location, Fly, ItemType
 
 class Inventory:
   
     # Setup inventory
     money: float = 0
-    fish: dict = {}
-    powerups: dict = {}
-    flies: list[str] = ['white']
-    locations: list[str] = ['The Dells']
+    fish: dict
+    powerups: dict
+    flies: list[str] = [Fly.white]
+    locations: list[str] = [Location.dells]
     
     # Set defaults
-    fly: str = 'white'
-    location: str = 'The Dells'
+    fly: str = Fly.white
+    location: str = Location.dells
   
 
   # Fish
     def add_items(self, items, item_type=str):
-        # fish is a dict, e.g., {'brown trout': 1}
         
         match item_type:
 
@@ -98,12 +98,12 @@ class Inventory:
             
               # [0] = base time, +/- a randint beteen -1*[1] and [1]
 
-              'white': [10,4],
-              'red': [15,5],
-              'gold': [7,3],
+              Fly.white: [10,4],
+              Fly.red: [15,5],
+              Fly.gold: [7,3],
 
-              'dev': [2,0],
-              'dev_shit': [2,0],
+              Fly.dev: [2,0],
+              Fly.dev_shit: [2,0],
         }
         return fly_times.get(self.fly, 0)
     
@@ -125,9 +125,9 @@ class Inventory:
     def get_game(self):
       
         fish_pools = {
-            'The Dells': ['brown trout','smallmouth bass','muskellunge'],
-            'Chicago': ['brown trout','coho salmon','steelhead'],
-            'dev': ['common','uncommon','rare']
+            Location.dells: [Fish.trout,Fish.smallmouth,Fish.muskellunge],
+            Location.chicago: [Fish.trout,Fish.salmon,Fish.steelhead],
+            Location.dev: [Fish.common,Fish.uncommon,Fish.rare]
         }
         
         return fish_pools.get(self.location)
@@ -142,18 +142,18 @@ class Inventory:
         fish_values = {
             
             # Common fish
-            'common': 5,
-            'brown trout': 5,
+            Fish.common: 5,
+            Fish.trout: 5,
             
             # Uncommon fish
-            'uncommon': 7,
-            'smallmouth bass': 7,
-            'coho salmon': 8,
+            Fish.uncommon: 7,
+            Fish.smallmouth: 7,
+            Fish.salmon: 8,
 
             # Rare fish
-            'rare': 15,
-            'muskellunge': 13, 
-            'steelhead': 16,
+            Fish.rare: 15,
+            Fish.muskellunge: 13, 
+            Fish.steelhead: 16,
             
         }
 
@@ -190,19 +190,25 @@ class Inventory:
 
     # Other
     def dev_mode(self):
-        self.flies = ['white','red','gold','dev','dev_shit']
-        self.locations = ['The Dells','Chicago','dev']
+        
+        # Get all items in game
+
+        for item in Fly:
+            if item not in self.flies:
+                self.flies.append(item)
+
+        for item in Location:
+            if item not in self.locations:
+                self.locations.append(item)
+
+        for item in Fish:
+            if item not in self.fish:
+                self.fish.append(item)
+
         self.money = 999
 
-        self.fly = 'dev'
-        self.location = 'dev'
-        
-        current_locat = self.location
-        for locat in self.locations:
-            self.location = locat
-            for fsh in self.get_game():
-                self.add_items(fsh, 'fish')
-        self.location = current_locat
+        self.fly = Fly.dev
+        self.location = Location.dev
 
 
 def testing():
@@ -210,11 +216,11 @@ def testing():
     inventory = Inventory()
 
     for num in range(5):
-        inventory.add_item({'brown trout':1},'fish')
-        print(f'You have {inventory.fish["brown trout"]} brown trout')
+        inventory.add_item({Fish.trout:1},ItemType.fish)
+        print(f"You have {inventory.fish[Fly.trout]} brown trout")
         input()
     inventory.see_fish('You have: ')
 
-    inventory.add_fly('red')
-    inventory.change_fly()
-    print(f'You are using your {inventory.fly} fly')
+    inventory.add_fly(Fly.red)
+    inventory.change_fly(Fly.red)
+    print(f"You are using your {inventory.fly} fly")

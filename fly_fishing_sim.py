@@ -3,6 +3,7 @@ from collections import Counter
 from time import sleep
 from inventory import Inventory
 from flexible_menus import menu, sell_menu, buy_menu
+from enums import Fish, Location, Fly, ItemType
 
 def go_fishing(inventory=Inventory):
     
@@ -12,7 +13,7 @@ def go_fishing(inventory=Inventory):
     cast_time = inventory.get_time()
     game = inventory.get_game()
 
-    print(f'At {inventory.location}, you attach your {inventory.fly} fly to your fishing line and wade into the water.')
+    print(f"At {inventory.location}, you attach your {inventory.fly} fly to your fishing line and wade into the water.")
     print(f'Press [RETURN] to cast, or enter "LEAVE" to leave.')
 
     while True:
@@ -21,7 +22,7 @@ def go_fishing(inventory=Inventory):
         if input().upper().strip() == 'LEAVE':
             break
 
-        print(f'You cast your line with your {inventory.fly} fly!')
+        print(f"You cast your line with your {inventory.fly} fly!")
     
         casting_time = cast_time[0] + randint(-1 * cast_time[1],cast_time[1])
 
@@ -49,7 +50,7 @@ def go_fishing(inventory=Inventory):
         
         # Showing cast results
         if fish:
-            print(f'You caught a {fish}!')
+            print(f"You caught a {fish}!")
             fish_caught.append(fish)
         else:
             print("It was just some seaweed.")
@@ -59,13 +60,13 @@ def go_fishing(inventory=Inventory):
         print("You didn't catch anything")
 
     else: 
-        fish_counted = Counter(fish_caught)
+        fish_caught = Counter(fish_caught)
 
         print('You caught:')
-        for fsh in fish_counted:
-            print(f'- {fish_counted[fsh]} {fsh}')
+        for fsh in fish_caught:
+            print(f"- {fish_caught[fsh]} {fsh}")
 
-        inventory.add_items(fish_counted, 'fish')
+        inventory.add_items(fish_caught, 'fish')
 
     return inventory
 
@@ -123,7 +124,7 @@ def market(inventory=Inventory):
                                 else: 
                                     print('Fish not found!')
                             
-                            merch_output = merchant(inventory, stock, prices, ['Could I interest you in anything from my collection?','Interested in anything else?'],'Okay, bye-bye!',['You bought all my fish for $','!? Wow... keep it up and there might be something in store for you.'], 'fish') 
+                            merch_output = merchant(inventory, stock, prices, ['Could I interest you in anything from my collection?','Interested in anything else?'],'Okay, bye-bye!','You want everything? Wow... keep it up and there might be something in store for you.', 'fish') 
                             
                             inventory = merch_output[0]
                             stock = merch_output[1]
@@ -156,7 +157,7 @@ def market(inventory=Inventory):
                     
                     # None
                     if not sell_fish:
-                        print(f'You now have ${inventory.money}')
+                        print(f"You now have ${inventory.money}")
                         break
                     
                     # Sell all
@@ -178,7 +179,7 @@ def market(inventory=Inventory):
                         if inventory.fish:
                             print('Failed to remove all fish!')
 
-                        print(f'You sold all your fish for ${money_added}')
+                        print(f"You sold all your fish for ${money_added}")
                         break
 
                     # Particular fish selected
@@ -187,7 +188,7 @@ def market(inventory=Inventory):
                         fish_num = inventory.fish.get(sell_fish)
 
                         try: 
-                            sell_num = int(input(f'How many {sell_fish} would you like to sell? (up to {fish_num})\n'))
+                            sell_num = int(input(f"How many {sell_fish} would you like to sell? (up to {fish_num})\n").strip())
                             
                             if sell_num == 0:
                                 print('Sale cancelled')
@@ -200,7 +201,7 @@ def market(inventory=Inventory):
 
                                 inventory.remove_fish({sell_fish:sell_num})
 
-                                print(f'You sold {sell_num} {sell_fish} for ${fish_worth}.')
+                                print("You sold {sell_num} {sell_fish} for ${fish_worth}.")
 
                                 break
 
@@ -247,12 +248,13 @@ def merchant(inventory=Inventory, stock=dict, prices=dict, menu_txts=list, exit_
                 inventory.add_items({itm:stock.get(itm)}, item_type)
                 stock.pop(itm)
                 
-            inventory.change_money(money_subtracted)
+            inventory.change_money(-1 * money_subtracted)
 
             if stock:
                 print('Failed to buy all items!')
-
-            print(buy_all_text[0], money_subtracted, buy_all_text[1])
+            
+            print(f"You bought everything for ${money_subtracted}, and have ${inventory.money} left")
+            print(buy_all_text)
             return [inventory,stock,prices]
         
         # Buy one
@@ -265,6 +267,7 @@ def merchant(inventory=Inventory, stock=dict, prices=dict, menu_txts=list, exit_
             stock.update({buy_select:new_item_count})
 
         menu_text = menu_txts[1]
+
 
 def main():
     
@@ -289,7 +292,7 @@ def main():
 
             case 'Check inventory':
                 
-                print(f'You have ${inventory.money}')
+                print(f"You have ${inventory.money}")
                 match menu(['Fish','Flies','Locations','Powerups', 'Exit'],'What would you like to see?'):
                     
                     case 'Fish':
@@ -303,11 +306,11 @@ def main():
             
             case 'Change fly':
                 inventory.change_fly()
-                print(f'You are now using your {inventory.fly} fly!')
+                print(f"You are now using your {inventory.fly} fly!")
             
             case 'Travel':
                 # location = menu(inventory.locations, 'Where would you like to go?')
-                print(f'You are now at {inventory.location}!')
+                print(f"You are now at {inventory.location}!")
             
             case _: 
                 print('Invalid option!')
