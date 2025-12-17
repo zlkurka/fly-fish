@@ -2,6 +2,7 @@
 ## Modifications
 ### Inventory
 - Add options to display `flies`, `locations`.
+- Revamp system for storing data about `fish` (name, rarity, crafting output). Maybe make a class for fish?
 ### Main menu
 - Only display options that are possible for player (e.g., no travel option if player only has one `location` unlocked).
 ### Fishing
@@ -16,7 +17,7 @@ What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 - Randomly determine what is in stock (location-based).
 - Can buy other fish?
 ### Powerups
-Will probably need to be global.
+- Figure out powerup merchant
 - Add powerups option to `go_fishing`.
 - **Sake**: increases "fishing power" (`odds`?).
 - **Coffee grounds**: throw into the water to make fish faster, decreases `cast_time` (make sure can't go below zero).
@@ -24,6 +25,7 @@ Will probably need to be global.
 - **Dissolving melatonin**: makes fish sleepy (more able to catch with a net?).
 ### Crafting
 - Can craft **fish** into other items (**flies**, **powerups**, etc.).
+- Fish sold by the Fishmonger have a chance to contain special materials.
 ### Minigames
 #### Dangerous fish
 - May need items to defend against some fish.
@@ -38,8 +40,9 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
 - **The Fisherman**: 
   - This character was the main inspiration for this game. I had an idea for a diaglogue-based RPG with three characters who would die soon. My favorite was the fisherman, so I decided to design a game specifically for him.
   - The Fisherman is the father or father-figure of the main character.
+  - He has a sort of disease-like relationship to fishing, something something horror elements. The activity takes something from him, and he passes this down to the MC (something something cancer allegory).
 - **The Fishmonger**
-  - Can buy **fish** from him, which seems useless at first
+  - Can buy **fish** from him, which seems useless at first, but these fish have a chance to contain special crafting materials.
   - Secret: can eventually unlock the ability to play **Go Fish** with him. I'll need to make the Fishmonger interesting enough to encourage players to interact with him.
   - Taking design inspo from the underscores album would be funny.
 - **The Drink Lady**
@@ -52,7 +55,6 @@ Would need to be location-based.
 - A dungeon-crawler (it would be funny).
 # Next steps
 ## Market
-- Buy template items.
 - Clean up code for selling (simplify variables, revisit organization)
 ## Powerups
 - Add **Sake** and **Coffee grounds**.

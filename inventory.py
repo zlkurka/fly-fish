@@ -1,6 +1,6 @@
 from string import ascii_uppercase
 from collections import Counter
-from flexible_menu import menu
+from flexible_menus import menu
 
 class Inventory:
   
@@ -17,28 +17,35 @@ class Inventory:
   
 
   # Fish
-    def add_fish(self, fish):
+    def add_items(self, items, item_type=str):
         # fish is a dict, e.g., {'brown trout': 1}
         
-        if type(fish) is list:
-            fish_dict = {}
-            for fsh in fish:
-                fish_dict.update({fish:1})
-        if type(fish) is str:
-            fish = {fish:1}
+        match item_type:
 
-        new_fish = list(fish)[0]
+            case 'fish':
 
-        if new_fish in self.fish:
+                if type(items) is list:
+                    fish_dict = {}
+                    for fsh in items:
+                        fish_dict.update({items:1})
+                if type(items) is str:
+                    items = {items:1}
 
-            self.fish.update({
-                new_fish:
-                fish.get(new_fish) + self.fish.get(new_fish)})
-          
-        else:
-            self.fish.update(fish)
+                new_fish = list(items)[0]
+
+                if new_fish in self.fish:
+
+                    self.fish.update({
+                        new_fish:
+                        items.get(new_fish) + self.fish.get(new_fish)})
+                
+                else:
+                    self.fish.update(items)
+            
+            case _:
+                print('Unacceptable item type!')
     
-    def remove_fish(self, fish):
+    def remove_fish(self, fish=dict):
 
         fish_name = list(fish)[0]
 
@@ -74,7 +81,7 @@ class Inventory:
     
 
     # Flies
-    def add_fly(self, new_fly):
+    def add_fly(self, new_fly=str):
         if new_fly not in self.flies:
             self.flies.append(new_fly)
         else:
@@ -106,7 +113,7 @@ class Inventory:
             
             # [0]% chance to catch a common fish, [1]-[0]% chance for uncommon, [2]-[1]-[0]% for rare
 
-            'white': [20,30,35],
+            'white': [30,40,45],
             'red': [10,20,40],
             'gold': [50,70,80],
 
@@ -127,10 +134,10 @@ class Inventory:
     
 
     # Shopping
-    def change_money(self, change):
+    def change_money(self, change=int):
         self.money += change
 
-    def get_value(self,fish):
+    def get_value(self,fish=str):
       
         fish_values = {
             
@@ -152,7 +159,7 @@ class Inventory:
 
         return fish_values.get(fish, 0)
     
-    def purchase(self, buy_item, item_count, item_price):
+    def purchase(self, buy_item=str, item_count=int, item_price=float):
         while True:
             try: 
                 
@@ -194,7 +201,7 @@ class Inventory:
         for locat in self.locations:
             self.location = locat
             for fsh in self.get_game():
-                self.add_fish(fsh)
+                self.add_items(fsh, 'fish')
         self.location = current_locat
 
 
@@ -203,7 +210,7 @@ def testing():
     inventory = Inventory()
 
     for num in range(5):
-        inventory.add_fish({'brown trout':1})
+        inventory.add_item({'brown trout':1},'fish')
         print(f'You have {inventory.fish["brown trout"]} brown trout')
         input()
     inventory.see_fish('You have: ')

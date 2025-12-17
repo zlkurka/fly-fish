@@ -56,11 +56,11 @@ def buy_menu(menu_text, items, price):
         menu_legend.update({menu_key:sell_item})
         sell_opts.append(menu_key)
         
-    sell_opts.append(None)
+    sell_opts.extend(['Buy all',None])
 
     selection = menu(sell_opts, menu_text)
     
-    if not selection:
-        return None
+    if not selection or selection == 'Buy all':
+        return selection
     else:
         return menu_legend.get(selection)
