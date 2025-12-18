@@ -1,6 +1,7 @@
 from string import ascii_uppercase
+from enums import Fish, Location, Fly, ItemType
 
-def menu(options, menu_text):
+def menu(options=list, menu_text=str):
 
     # Printing menu
     print(menu_text)
@@ -23,14 +24,14 @@ def menu(options, menu_text):
         else:
             return options[selection_num]
 
-def sell_menu(menu_text, items, price):
+def sell_menu(menu_text=str, items=dict, price=dict):
 
     menu_legend = {}
     sell_opts = []
     
     for sell_item in items:
         
-        menu_key = f'{sell_item} ({items[sell_item]}x, ${price.get(sell_item)} each)'
+        menu_key = f'{sell_item.value} ({items[sell_item]}x, ${price.get(sell_item)} each)'
 
         menu_legend.update({menu_key:sell_item})
         sell_opts.append(menu_key)
@@ -44,16 +45,16 @@ def sell_menu(menu_text, items, price):
 
     return menu_legend.get(selection)
     
-def buy_menu(menu_text, items, price):
+def buy_menu(menu_text=str, items=dict, price=dict):
 
     menu_legend = {}
     sell_opts = []
     
-    for sell_item in items:
+    for buy_item in items:
         
-        menu_key = f'{sell_item} ({items[sell_item]}x, ${price[sell_item]} each)'
+        menu_key = f"{buy_item.value} ({items[buy_item]}x, ${price[buy_item]} each)"
 
-        menu_legend.update({menu_key:sell_item})
+        menu_legend.update({menu_key:buy_item})
         sell_opts.append(menu_key)
         
     sell_opts.extend(['Buy all',None])

@@ -1,6 +1,7 @@
 from random import randint, sample
 from collections import Counter
 from time import sleep
+from string import ascii_uppercase
 from inventory import Inventory
 from flexible_menus import menu, sell_menu, buy_menu
 from enums import Fish, Location, Fly, ItemType
@@ -13,62 +14,89 @@ def go_fishing(inventory=Inventory):
     cast_time = inventory.get_time()
     game = inventory.get_game()
 
-    print(f"At {inventory.location}, you attach your {inventory.fly} fly to your fishing line and wade into the water.")
-    print(f'Press [RETURN] to cast, or enter "LEAVE" to leave.')
+    print(f"At {inventory.location.value}, you attach your {inventory.fly.value} fly to your fishing line and wade into the water.")
+    options = ['Change fly','Leave']
 
+    # Fishing menu
+    print('[RETURN]) Cast')
+    for item_num in range(len(options)):
+        print(f'{list(ascii_uppercase)[item_num]}) {str(options[item_num]).capitalize()}')
+        # Will print like "A) Squid"
+
+    # Taking input and translating to list item
     while True:
-        
-        # Check if leaving
-        if input().upper().strip() == 'LEAVE':
-            break
 
-        print(f"You cast your line with your {inventory.fly} fly!")
-    
-        casting_time = cast_time[0] + randint(-1 * cast_time[1],cast_time[1])
+        selection = input().upper().strip()
 
-        # Sleeping for casting_time / 2, printing ellipsis every second
-        print_ellipsis = True
-        for secs in range(casting_time):
-            print_ellipsis = not print_ellipsis
-            if print_ellipsis:
-                print('...')
-            sleep(.5)
-
-        # Determining catch
-        fish_chance = randint(1,100)
-        # Common
-        if fish_chance < odds[0]:
-            fish = game[0]
-        # Uncommon
-        elif odds[0] <= fish_chance < odds[1]:
-            fish = game[1]
-        # Rare
-        elif odds[1] <= fish_chance < odds[2]:
-            fish = game[2]
+        if selection == '':
+            selection = 'Cast'
+        elif selection not in list(ascii_uppercase):
+            print('Invalid input! Enter only the letter corresponding to your selection.')
+        elif list(ascii_uppercase).index(selection) > len(options) - 1:
+            print('Invalid input! This letter does not correspond to an option.')
         else:
-            fish = None
+            selection = options[list(ascii_uppercase).index(selection)]
         
-        # Showing cast results
-        if fish:
-            print(f"You caught a {fish}!")
-            fish_caught.append(fish)
-        else:
-            print("It was just some seaweed.")
-    
-    # Display fish caught
-    if not fish_caught:
-        print("You didn't catch anything")
+        match selection:
+            case 'Cast':
 
-    else: 
-        fish_caught = Counter(fish_caught)
+                print(f"You cast your line with your {inventory.fly.value} fly!")
+            
+                casting_time = cast_time[0] + randint(-1 * cast_time[1],cast_time[1])
 
-        print('You caught:')
-        for fsh in fish_caught:
-            print(f"- {fish_caught[fsh]} {fsh}")
+                # Sleeping for casting_time / 2, printing ellipsis every second
+                print_ellipsis = True
+                for secs in range(casting_time):
+                    print_ellipsis = not print_ellipsis
+                    if print_ellipsis:
+                        print('...')
+                    sleep(.5)
 
-        inventory.add_items(fish_caught, 'fish')
+                # Determining catch
+                fish_chance = randint(1,100)
+                # Common
+                if fish_chance < odds[0]:
+                    fish = game[0]
+                # Uncommon
+                elif odds[0] <= fish_chance < odds[1]:
+                    fish = game[1]
+                # Rare
+                elif odds[1] <= fish_chance < odds[2]:
+                    fish = game[2]
+                else:
+                    fish = None
+                
+                # Showing cast results
+                if fish:
+                    print(f"You caught a {fish.value}!")
+                    fish_caught.append(fish)
+                else:
+                    print("It was just some seaweed.")
+            
+            case 'Change fly':
+                print(f"You are currently using you {inventory.fly} fly.")
+                inventory.change_fly()
+                print(f"You are now using your {inventory.fly.value} fly!")
 
-    return inventory
+            case 'Leave':
+                
+                # Display fish caught
+                if not fish_caught:
+                    print("You didn't catch anything")
+
+                else: 
+                    fish_caught = dict(Counter(fish_caught))
+
+                    print('You caught:')
+                    for fsh in fish_caught:
+                        print(f"- {fish_caught[fsh]} {fsh.value}")
+
+                    inventory.add_items(fish_caught, ItemType.fish)
+
+                return inventory
+            
+            case _:
+                print('Invalid selection!')
 
 
 def market(inventory=Inventory):
@@ -86,9 +114,9 @@ def market(inventory=Inventory):
 
                         case 'Fishmonger':                            
 
-                            common_fish = ['brown trout']
-                            uncommon_fish = ['smallmouth bass','coho salmon']
-                            rare_fish = ['steelhead','muskellunge']
+                            common_fish = [Fish.trout]
+                            uncommon_fish = [Fish.smallmouth,Fish.salmon]
+                            rare_fish = [Fish.steelhead,Fish.muskellunge]
                             
                             stock = []
                             for iter in range(5):
@@ -109,7 +137,7 @@ def market(inventory=Inventory):
                                 
                                 else:
                                     print('Failed to add fish')
-                                    stock.append('brown trout')
+                                    stock.append(Fish.trout)
 
                             stock = dict(Counter(stock))
                             
@@ -282,7 +310,7 @@ def main():
     
     # Main menu
     while True:
-        match menu(['Go fishing','Go to the market','Check inventory','Change fly','Travel'], 'What would you like to do?'):
+        match menu(['Go fishing','Go to the market','Check inventory','Travel'], 'What would you like to do?'):
             
             case 'Go fishing':
                 inventory = go_fishing(inventory)
@@ -304,13 +332,9 @@ def main():
                     case _:
                         print('Invalid option!')
             
-            case 'Change fly':
-                inventory.change_fly()
-                print(f"You are now using your {inventory.fly} fly!")
-            
             case 'Travel':
                 # location = menu(inventory.locations, 'Where would you like to go?')
-                print(f"You are now at {inventory.location}!")
+                print(f"You are now at {inventory.location.value}!")
             
             case _: 
                 print('Invalid option!')

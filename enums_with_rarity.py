@@ -2,6 +2,17 @@ from enum import Enum
 
 class Fish(Enum):
 
+    def __init__(self):
+        if self in [self.trout,self.common_fish]:
+            rarity = self.common
+        elif self in [self.smallmouth,self.salmon,self.uncommon_fish]:
+            rarity = self.uncommon
+        elif self in [self.steelhead,self.muskellunge,self.rare_fish]:
+            rarity = self.rare
+        else:
+            print('Fish rarity not found!')
+            rarity = None
+
     # Common
     trout = 'brown trout'
     common_fish = 'common'

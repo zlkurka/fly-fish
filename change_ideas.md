@@ -5,8 +5,6 @@
 - Revamp system for storing data about `fish` (name, rarity, crafting output). Maybe make a class for fish?
 ### Main menu
 - Only display options that are possible for player (e.g., no travel option if player only has one `location` unlocked).
-### Fishing
-- Move **Change fly** option from main menu. Options in menu: [RETURN] to cast, "A" to change fly, "B" for powerups, and "C" to leave.
 ### Market
 - Variability in sell-prices (proportional or within a range).
 - Location-based sell-price variability.

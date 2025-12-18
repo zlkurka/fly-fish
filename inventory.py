@@ -7,22 +7,22 @@ class Inventory:
   
     # Setup inventory
     money: float = 0
-    fish: dict
+    fish: dict = {}
     powerups: dict
     flies: list[str] = [Fly.white]
     locations: list[str] = [Location.dells]
     
     # Set defaults
-    fly: str = Fly.white
-    location: str = Location.dells
+    fly: str = flies[0]
+    location: str = locations[0]
   
 
   # Fish
-    def add_items(self, items, item_type=str):
+    def add_items(self, items, item_type=ItemType):
         
         match item_type:
 
-            case 'fish':
+            case ItemType.fish:
 
                 if type(items) is list:
                     fish_dict = {}
@@ -73,11 +73,9 @@ class Inventory:
                 print("You don't have any fish!")
 
         else: 
-            fish_counted = Counter(self.fish)
-
             print(text[0])
-            for fsh in fish_counted:
-                print(f'- {fish_counted[fsh]} {fsh}')
+            for fsh in self.fish:
+                print(f'- {self.fish[fsh]} {fsh.value}')
     
 
     # Flies
@@ -105,7 +103,7 @@ class Inventory:
               Fly.dev: [2,0],
               Fly.dev_shit: [2,0],
         }
-        return fly_times.get(self.fly, 0)
+        return fly_times[self.fly]\
     
     def get_odds(self):
       
@@ -113,14 +111,14 @@ class Inventory:
             
             # [0]% chance to catch a common fish, [1]-[0]% chance for uncommon, [2]-[1]-[0]% for rare
 
-            'white': [30,40,45],
-            'red': [10,20,40],
-            'gold': [50,70,80],
+            Fly.white: [30,40,45],
+            Fly.red: [15,35,60],
+            Fly.gold: [50,70,80],
 
-            'dev': [33,66,100],
-            'dev_shit': [0,1,2],
+            Fly.dev: [33,66,100],
+            Fly.dev_shit: [0,1,2],
         }
-        return fly_odds.get(self.fly, 0)
+        return fly_odds[self.fly]
     
     def get_game(self):
       
@@ -203,7 +201,7 @@ class Inventory:
 
         for item in Fish:
             if item not in self.fish:
-                self.fish.append(item)
+                self.fish.update({item:1})
 
         self.money = 999
 
