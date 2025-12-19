@@ -1,46 +1,60 @@
 from string import ascii_uppercase
 from collections import Counter
 from flexible_menus import menu
-from enums import Fish, Location, Fly, ItemType
+from enums import FishType, Location, Fly, ItemType
+from fish import Fish
 
 class Inventory:
   
     # Setup inventory
     money: float = 0
+
     fish: dict = {}
-    powerups: dict
-    flies: list[str] = [Fly.white]
-    locations: list[str] = [Location.dells]
+    sus_fish: dict = {}
+
+    flies: list[Fly] = [Fly.white]
+    powerups: dict = {}
+    locations: list[Location] = [Location.dells]
     
     # Set defaults
-    fly: str = flies[0]
-    location: str = locations[0]
+    fly: Fly = flies[0]
+    location: Location = locations[0]
   
 
   # Fish
     def add_items(self, items, item_type=ItemType):
         
+        if type(items) is list:
+            
+            item_list = items
+
+            items = {}
+            for fsh in item_list:
+                items.update({items:1})
+
+        if type(items) is str:
+            items = {items:1}
+
         match item_type:
 
             case ItemType.fish:
 
-                if type(items) is list:
-                    fish_dict = {}
-                    for fsh in items:
-                        fish_dict.update({items:1})
-                if type(items) is str:
-                    items = {items:1}
+                for fsh in items:
 
-                new_fish = list(items)[0]
-
-                if new_fish in self.fish:
-
-                    self.fish.update({
-                        new_fish:
-                        items.get(new_fish) + self.fish.get(new_fish)})
+                    if not fsh.is_sus:
+                        
+                        if fsh in self.fish:
+                            self.fish.update({fsh:items[fsh] + self.fish[fsh]})
                 
-                else:
-                    self.fish.update(items)
+                        else:
+                            self.fish.update({fsh:items[fsh]})
+                    else:
+
+                        if fsh in self.sus_fish:
+                            self.sus_fish.update({fsh:items[fsh] + self.fish[fsh]})
+                    
+                        else:
+                            self.sus_fish.update({fsh:items[fsh]})
             
             case _:
                 print('Unacceptable item type!')
@@ -75,7 +89,9 @@ class Inventory:
         else: 
             print(text[0])
             for fsh in self.fish:
-                print(f'- {self.fish[fsh]} {fsh.value}')
+                print(f'- {self.fish[fsh]} {fsh.get_name()}')
+            for fsh in self.sus_fish:
+                print(f'- {self.sus_fish[fsh]} {fsh.get_name()}')
     
 
     # Flies
@@ -119,17 +135,6 @@ class Inventory:
             Fly.dev_shit: [0,1,2],
         }
         return fly_odds[self.fly]
-    
-    def get_game(self):
-      
-        fish_pools = {
-            Location.dells: [Fish.trout,Fish.smallmouth,Fish.muskellunge],
-            Location.chicago: [Fish.trout,Fish.salmon,Fish.steelhead],
-            Location.dev: [Fish.common,Fish.uncommon,Fish.rare]
-        }
-        
-        return fish_pools.get(self.location)
-    
 
     # Shopping
     def change_money(self, change=int):
@@ -199,9 +204,9 @@ class Inventory:
             if item not in self.locations:
                 self.locations.append(item)
 
-        for item in Fish:
+        for item in FishType:
             if item not in self.fish:
-                self.fish.update({item:1})
+                self.fish.update({Fish(item):1})
 
         self.money = 999
 

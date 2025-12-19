@@ -1,5 +1,5 @@
 from string import ascii_uppercase
-from enums import Fish, Location, Fly, ItemType
+from enums import FishType, Location, Fly, ItemType
 
 def menu(options=list, menu_text=str):
 

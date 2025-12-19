@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Fish(Enum):
+class FishType(Enum):
 
     # Common
     trout = 'brown trout'
@@ -15,11 +15,6 @@ class Fish(Enum):
     steelhead = 'steelhead'
     muskellunge = 'muskellunge'
     rare_fish = 'rare'
-
-    # Rarities
-    common = 'common'
-    uncommon = 'uncommon'
-    rare = 'rare'
 
 class Location(Enum):
 
@@ -60,12 +55,18 @@ class ItemType(Enum):
 
     fish = 'fish'
 
+class Rarity(Enum):
+    
+    # Rarities
+    common = 'common'
+    uncommon = 'uncommon'
+    rare = 'rare'
 
 def testing():
-    print(Fish.trout)
-    print(Fish.trout.value.capitalize())
-    print(Fish.trout.name.upper())
+    print(FishType.trout)
+    print(FishType.trout.value.capitalize())
+    print(FishType.trout.name.upper())
 
-    print(type(Fish.trout))
-    print(type(Fish.trout.name))
-    print(type(Fish.trout.value))
+    print(type(FishType.trout))
+    print(type(FishType.trout.name))
+    print(type(FishType.trout.value))

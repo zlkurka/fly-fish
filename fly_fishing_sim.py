@@ -3,8 +3,9 @@ from collections import Counter
 from time import sleep
 from string import ascii_uppercase
 from inventory import Inventory
+from fish import Fish
 from flexible_menus import menu, sell_menu, buy_menu
-from enums import Fish, Location, Fly, ItemType
+from enums import FishType, Location, Fly, ItemType
 
 def go_fishing(inventory=Inventory):
     
@@ -12,7 +13,7 @@ def go_fishing(inventory=Inventory):
 
     odds = inventory.get_odds()
     cast_time = inventory.get_time()
-    game = inventory.get_game()
+    game = Fish().get_game(inventory.location)
 
     print(f"At {inventory.location.value}, you attach your {inventory.fly.value} fly to your fishing line and wade into the water.")
     options = ['Change fly','Leave']
@@ -56,19 +57,19 @@ def go_fishing(inventory=Inventory):
                 fish_chance = randint(1,100)
                 # Common
                 if fish_chance < odds[0]:
-                    fish = game[0]
+                    fish = Fish(game[0])
                 # Uncommon
                 elif odds[0] <= fish_chance < odds[1]:
-                    fish = game[1]
+                    fish = Fish(game[1])
                 # Rare
                 elif odds[1] <= fish_chance < odds[2]:
-                    fish = game[2]
+                    fish = Fish(game[2])
                 else:
                     fish = None
                 
                 # Showing cast results
                 if fish:
-                    print(f"You caught a {fish.value}!")
+                    print(f"You caught a {fish.get_name()}!")
                     fish_caught.append(fish)
                 else:
                     print("It was just some seaweed.")
@@ -85,11 +86,11 @@ def go_fishing(inventory=Inventory):
                     print("You didn't catch anything")
 
                 else: 
-                    fish_caught = dict(Counter(fish_caught))
+                    fish_caught = Counter(fish_caught)
 
                     print('You caught:')
                     for fsh in fish_caught:
-                        print(f"- {fish_caught[fsh]} {fsh.value}")
+                        print(f"- {fish_caught[fsh]} {fsh.get_name()}")
 
                     inventory.add_items(fish_caught, ItemType.fish)
 
