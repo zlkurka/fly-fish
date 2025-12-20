@@ -1,28 +1,31 @@
 from string import ascii_uppercase
-from enums import FishType, Location, Fly, ItemType
+from collections import Counter
+from enums import FishType, Location, Fly, ItemType, Powerup
 
 def menu(options=list, menu_text=str):
 
     # Printing menu
     print(menu_text)
     for item_num in range(len(options)):
-        print(f'{list(ascii_uppercase)[item_num]}) {str(options[item_num]).capitalize()}')
+        try:
+            print(f'{list(ascii_uppercase)[item_num]}) {options[item_num].value.capitalize()}')
+        except AttributeError:
+            print(f'{list(ascii_uppercase)[item_num]}) {str(options[item_num]).capitalize()}')
         # Will print like "A) Squid"
 
-  # Taking input and translating to list item
+    # Taking input and translating to list item
     while True:
 
         selection = input().upper().strip()
-        selection_num = list(ascii_uppercase).index(selection)
 
         if selection not in list(ascii_uppercase):
             print('Invalid input! Enter only the letter corresponding to your selection.')
         
-        elif selection_num > len(options) - 1:
+        elif list(ascii_uppercase).index(selection) > len(options) - 1:
             print('Invalid input! This letter does not correspond to an option.')
         
         else:
-            return options[selection_num]
+            return options[list(ascii_uppercase).index(selection)]
 
 def sell_menu(menu_text=str, items=dict, price=dict):
 
@@ -45,16 +48,17 @@ def sell_menu(menu_text=str, items=dict, price=dict):
 
     return menu_legend.get(selection)
     
-def buy_menu(menu_text=str, items=dict, price=dict):
+def buy_menu(menu_text=str, items=list, price=dict):
 
     menu_legend = {}
     sell_opts = []
     
-    for buy_item in items:
+    items_counted = Counter(items)
+    for itm in Counter(items):
         
-        menu_key = f"{buy_item.value} ({items[buy_item]}x, ${price[buy_item]} each)"
+        menu_key = f"{itm.value} ({items_counted[itm]}x, ${price[itm]} each)"
 
-        menu_legend.update({menu_key:buy_item})
+        menu_legend.update({menu_key:itm})
         sell_opts.append(menu_key)
         
     sell_opts.extend(['Buy all',None])

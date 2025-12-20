@@ -3,9 +3,9 @@ from collections import Counter
 from time import sleep
 from string import ascii_uppercase
 from inventory import Inventory
-from fish import Fish
 from flexible_menus import menu, sell_menu, buy_menu
-from enums import FishType, Location, Fly, ItemType
+from enums import FishType, Location, Fly, ItemType, Rarity, Merchant
+from fish_data import fish_pools, fish_rarities
 
 def go_fishing(inventory=Inventory):
     
@@ -13,7 +13,7 @@ def go_fishing(inventory=Inventory):
 
     odds = inventory.get_odds()
     cast_time = inventory.get_time()
-    game = Fish().get_game(inventory.location)
+    game = inventory.get_game()
 
     print(f"At {inventory.location.value}, you attach your {inventory.fly.value} fly to your fishing line and wade into the water.")
     options = ['Change fly','Leave']
@@ -57,19 +57,19 @@ def go_fishing(inventory=Inventory):
                 fish_chance = randint(1,100)
                 # Common
                 if fish_chance < odds[0]:
-                    fish = Fish(game[0])
+                    fish = game[0]
                 # Uncommon
                 elif odds[0] <= fish_chance < odds[1]:
-                    fish = Fish(game[1])
+                    fish = game[1]
                 # Rare
                 elif odds[1] <= fish_chance < odds[2]:
-                    fish = Fish(game[2])
+                    fish = game[2]
                 else:
                     fish = None
                 
                 # Showing cast results
                 if fish:
-                    print(f"You caught a {fish.get_name()}!")
+                    print(f"You caught a {fish.value}!")
                     fish_caught.append(fish)
                 else:
                     print("It was just some seaweed.")
@@ -86,11 +86,12 @@ def go_fishing(inventory=Inventory):
                     print("You didn't catch anything")
 
                 else: 
+                    
                     fish_caught = Counter(fish_caught)
 
                     print('You caught:')
                     for fsh in fish_caught:
-                        print(f"- {fish_caught[fsh]} {fsh.get_name()}")
+                        print(f"- {fish_caught[fsh]} {fsh.value}")
 
                     inventory.add_items(fish_caught, ItemType.fish)
 
@@ -108,40 +109,35 @@ def market(inventory=Inventory):
             
             case 'Visit shops':
                 while True: 
-                    match menu(['Drink Lady','Fishmonger','Leave'],'Who would you like to visit?'):
+                    match menu(['Fishmonger','Leave'],'Who would you like to visit?'):
                         
                         case 'Drink Lady':
                             print('Implementing soon!')
 
                         case 'Fishmonger':                            
-
-                            common_fish = [Fish.trout]
-                            uncommon_fish = [Fish.smallmouth,Fish.salmon]
-                            rare_fish = [Fish.steelhead,Fish.muskellunge]
                             
+                            common_fish = fish_rarities[Rarity.common]
+                            uncommon_fish = fish_rarities[Rarity.uncommon]
+                            rare_fish = fish_rarities[Rarity.rare]
+
+                            # Getting stock
                             stock = []
                             for iter in range(5):
                                 
                                 chance = randint(1,10)
                                 
-                                # Common
                                 if 1 <= chance < 5:
                                     stock.extend(sample(common_fish,1))
-                                
-                                # Uncommon
                                 elif 5 <= chance < 10:
                                     stock.extend(sample(uncommon_fish,1))
-                                
-                                # Rare
                                 elif chance == 10:
                                     stock.extend(sample(rare_fish,1))
                                 
                                 else:
                                     print('Failed to add fish')
-                                    stock.append(Fish.trout)
-
-                            stock = dict(Counter(stock))
+                                    stock.append(FishType.trout)
                             
+                            # Getting prices
                             prices = {}
                             for itm in stock:
                                 if itm in rare_fish:
@@ -153,7 +149,7 @@ def market(inventory=Inventory):
                                 else: 
                                     print('Fish not found!')
                             
-                            merch_output = merchant(inventory, stock, prices, ['Could I interest you in anything from my collection?','Interested in anything else?'],'Okay, bye-bye!','You want everything? Wow... keep it up and there might be something in store for you.', 'fish') 
+                            merch_output = merchant(inventory, stock, prices, ['Could I interest you in anything from my collection?','Interested in anything else?'],'Okay, bye-bye!','You want everything? Wow... keep it up and there might be something in store for you.', Merchant.fishmonger) 
                             
                             inventory = merch_output[0]
                             stock = merch_output[1]
@@ -248,8 +244,12 @@ def market(inventory=Inventory):
                 print('Invalid option!')
 
 
-def merchant(inventory=Inventory, stock=dict, prices=dict, menu_txts=list, exit_text=str, buy_all_text=str, item_type=str):
+def merchant(inventory=Inventory, stock=list, prices=dict, menu_txts=list, exit_text=str, buy_all_text=str, merchant_name=Merchant):
     
+    match merchant_name:
+        case Merchant.fishmonger:
+            item_type = ItemType.fish
+
     menu_text = menu_txts[0]
     
     while True:
@@ -266,34 +266,42 @@ def merchant(inventory=Inventory, stock=dict, prices=dict, menu_txts=list, exit_
 
             money_subtracted = 0
 
-            for itm in list(stock):
-                money_subtracted += stock.get(itm) * prices.get(itm)
+            for itm in stock:
+                money_subtracted += prices.get(itm)
             
             if money_subtracted > inventory.money:
                 print("Insufficient funds!")
                 return inventory
 
+
             for itm in list(stock):
-                inventory.add_items({itm:stock.get(itm)}, item_type)
-                stock.pop(itm)
+                
+                # Add sus fish
+                if merchant_name == Merchant.fishmonger and randint(1,4) == 4:
+                    inventory.add_items({itm:1}, ItemType.sus_fish)
+                
+                else:
+                    inventory.add_items({itm:1}, item_type)
+                
+                stock.remove(itm)
                 
             inventory.change_money(-1 * money_subtracted)
 
             if stock:
                 print('Failed to buy all items!')
             
-            print(f"You bought everything for ${money_subtracted}, and have ${inventory.money} left")
+            print(f"You bought everything for ${money_subtracted}, and have ${inventory.money} left.")
             print(buy_all_text)
             return [inventory,stock,prices]
         
         # Buy one
-        new_item_count = inventory.purchase(buy_select, stock.get(buy_select), prices.get(buy_select))
-        
-        if new_item_count == 0:
-            stock.pop(buy_select)
-            prices.pop(buy_select)
-        else:
-            stock.update({buy_select:new_item_count})
+        new_item_count = inventory.purchase(buy_select, stock.count(buy_select), prices.get(buy_select), ItemType.fish)
+
+        for iter in range(stock.count(buy_select) - new_item_count):
+            stock.remove(buy_select)
+            if merchant_name == Merchant.fishmonger and randint(1,4) == 4:
+                inventory.remove_fish({buy_select:1})
+                inventory.add_items({buy_select:1}, ItemType.sus_fish)
 
         menu_text = menu_txts[1]
 

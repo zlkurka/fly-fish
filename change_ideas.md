@@ -2,18 +2,18 @@
 ## Modifications
 ### Inventory
 - Add options to display `flies`, `locations`.
-- Revamp system for storing data about `fish` (name, rarity, crafting output). Maybe make a class for fish?
 ### Main menu
 - Only display options that are possible for player (e.g., no travel option if player only has one `location` unlocked).
 ### Market
 - Variability in sell-prices (proportional or within a range).
 - Location-based sell-price variability.
+### Time
+Right now, you can just fish forever and refresh a shop just by returning to the menu. I need days to pass, and for that I need there to be a cost for time passing, which is probably food or the encroach of doom.
 ## Additions
 ### Market
 What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
-#### Buying
-- Randomly determine what is in stock (location-based).
-- Can buy other fish?
+#### Fishmonger
+- Only allow buying of fish from locations the player has unlocked? Maybe I can use the list of each fish type the player has caught for this
 ### Powerups
 - Figure out powerup merchant
 - Add powerups option to `go_fishing`.
@@ -23,7 +23,9 @@ What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 - **Dissolving melatonin**: makes fish sleepy (more able to catch with a net?).
 ### Crafting
 - Can craft **fish** into other items (**flies**, **powerups**, etc.).
-- Fish sold by the Fishmonger have a chance to contain special materials.
+- **Suspicious fish** have a chance for bonus crafting materials
+### Journal
+Contains a list of each fish type you've caught (and maybe on what day?)
 ### Minigames
 #### Dangerous fish
 - May need items to defend against some fish.
@@ -40,19 +42,14 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
   - The Fisherman is the father or father-figure of the main character.
   - He has a sort of disease-like relationship to fishing, something something horror elements. The activity takes something from him, and he passes this down to the MC (something something cancer allegory).
 - **The Fishmonger**
-  - Can buy **fish** from him, which seems useless at first. However, there is a chance to buy a "suspicious" variant of any fish, which contains special crafting materials.
   - Secret: can eventually unlock the ability to play **Go Fish** with him. I'll need to make the Fishmonger interesting enough to encourage players to interact with him.
-  - Taking design inspo from the underscores album would be funny.
+  - Is secretly some sort of angler fish guy. I'll figure it out.
 - **The Drink Lady**
   - This is a filler name for an NPC who will sell **Sake** and **Coffee grounds**, and maybe some other powerups. I need to figure out who and how I want her to be.
 - Other market NPCs.
 
 Would need to be location-based.
-### Minigames
-- Go-fish (maybe could play with the Fishmonger).
-- A dungeon-crawler (it would be funny).
 # Next steps
-## Market
-- Clean up code for selling (simplify variables, revisit organization)
+- Clean up code all over the place (simplify variables, revisit organization, avoid pyramid structure?)
 ## Powerups
 - Add **Sake** and **Coffee grounds**.

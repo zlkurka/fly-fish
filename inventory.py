@@ -2,7 +2,7 @@ from string import ascii_uppercase
 from collections import Counter
 from flexible_menus import menu
 from enums import FishType, Location, Fly, ItemType
-from fish import Fish
+from fish_data import fish_pools
 
 class Inventory:
   
@@ -26,11 +26,14 @@ class Inventory:
         
         if type(items) is list:
             
-            item_list = items
-
+            items_list = items
             items = {}
-            for fsh in item_list:
-                items.update({items:1})
+
+            for itm in items_list:
+                if itm in items:
+                    items.update({itm:items[itm]+1})
+                else:
+                    items.update({itm:1})
 
         if type(items) is str:
             items = {items:1}
@@ -41,20 +44,21 @@ class Inventory:
 
                 for fsh in items:
 
-                    if not fsh.is_sus:
-                        
-                        if fsh in self.fish:
-                            self.fish.update({fsh:items[fsh] + self.fish[fsh]})
-                
-                        else:
-                            self.fish.update({fsh:items[fsh]})
+                    if fsh in self.fish:
+                        self.fish.update({fsh:items[fsh] + self.fish[fsh]})
+            
                     else:
+                        self.fish.update({fsh:items[fsh]})
+            
+            case ItemType.sus_fish:
 
-                        if fsh in self.sus_fish:
-                            self.sus_fish.update({fsh:items[fsh] + self.fish[fsh]})
-                    
-                        else:
-                            self.sus_fish.update({fsh:items[fsh]})
+                for fsh in items:
+
+                    if fsh in self.sus_fish:
+                        self.sus_fish.update({fsh:items[fsh] + self.sus_fish[fsh]})
+            
+                    else:
+                        self.sus_fish.update({fsh:items[fsh]})
             
             case _:
                 print('Unacceptable item type!')
@@ -73,14 +77,14 @@ class Inventory:
                     self.fish.pop(fish_name)
             
             else:
-                print(f'You do not have that many {fish_name}')
+                print(f'You do not have that many {fish_name.value}')
           
         else:
           print('You do not have this fish!')
 
     def see_fish(self, *text):
 
-        if not self.fish:
+        if not self.fish and not self.sus_fish:
             try: 
                 print(text[1])
             except IndexError:
@@ -89,9 +93,9 @@ class Inventory:
         else: 
             print(text[0])
             for fsh in self.fish:
-                print(f'- {self.fish[fsh]} {fsh.get_name()}')
+                print(f'- {self.fish[fsh]} {fsh.value}')
             for fsh in self.sus_fish:
-                print(f'- {self.sus_fish[fsh]} {fsh.get_name()}')
+                print(f'- {self.sus_fish[fsh]} suspicious {fsh.value}')
     
 
     # Flies
@@ -135,6 +139,9 @@ class Inventory:
             Fly.dev_shit: [0,1,2],
         }
         return fly_odds[self.fly]
+    
+    def get_game(self):
+        return fish_pools[self.location]
 
     # Shopping
     def change_money(self, change=int):
@@ -145,28 +152,25 @@ class Inventory:
         fish_values = {
             
             # Common fish
-            Fish.common: 5,
-            Fish.trout: 5,
+            FishType.trout: 5,
             
             # Uncommon fish
-            Fish.uncommon: 7,
-            Fish.smallmouth: 7,
-            Fish.salmon: 8,
+            FishType.smallmouth: 7,
+            FishType.salmon: 8,
 
             # Rare fish
-            Fish.rare: 15,
-            Fish.muskellunge: 13, 
-            Fish.steelhead: 16,
+            FishType.muskellunge: 13, 
+            FishType.steelhead: 16,
             
         }
 
         return fish_values.get(fish, 0)
     
-    def purchase(self, buy_item=str, item_count=int, item_price=float):
+    def purchase(self, buy_item, item_count=int, item_price=float, item_type=ItemType):
         while True:
             try: 
                 
-                buy_num = int(input(f'How many {buy_item} would you like to buy? (up to {item_count})\n'))
+                buy_num = int(input(f'How many {buy_item.value} would you like to buy? (up to {item_count})\n'))
                 
                 if buy_num == 0:
                     print('Sale cancelled')
@@ -175,13 +179,15 @@ class Inventory:
                 elif buy_num <= item_count:
 
                     sale_price = buy_num * item_price
+                    
                     if sale_price > self.money:
                         print("You don't have that much money!")
+                        continue
 
                     self.change_money(-1 * sale_price)
-                    self.remove_fish({buy_item:buy_num})
+                    self.add_items({buy_item:buy_num}, item_type)
 
-                    print(f'You bought {buy_num} {buy_item} for ${sale_price}.')
+                    print(f'You bought {buy_num} {buy_item.value} for ${sale_price}.')
 
                     return (item_count - buy_num)
 
@@ -206,12 +212,10 @@ class Inventory:
 
         for item in FishType:
             if item not in self.fish:
-                self.fish.update({Fish(item):1})
+                self.fish.update({item:1})
 
         self.money = 999
-
         self.fly = Fly.dev
-        self.location = Location.dev
 
 
 def testing():
@@ -219,7 +223,7 @@ def testing():
     inventory = Inventory()
 
     for num in range(5):
-        inventory.add_item({Fish.trout:1},ItemType.fish)
+        inventory.add_item({FishType.trout:1},ItemType.fish)
         print(f"You have {inventory.fish[Fly.trout]} brown trout")
         input()
     inventory.see_fish('You have: ')

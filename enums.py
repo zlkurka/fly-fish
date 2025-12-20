@@ -4,17 +4,14 @@ class FishType(Enum):
 
     # Common
     trout = 'brown trout'
-    common_fish = 'common'
     
     # Uncommon
     smallmouth = 'smallmouth bass'
     salmon = 'coho salmon'
-    uncommon_fish = 'uncommon'
 
     # Rare
     steelhead = 'steelhead'
     muskellunge = 'muskellunge'
-    rare_fish = 'rare'
 
 class Location(Enum):
 
@@ -54,6 +51,7 @@ class Powerup(Enum):
 class ItemType(Enum):
 
     fish = 'fish'
+    sus_fish = 'suspicious fish'
 
 class Rarity(Enum):
     
@@ -61,6 +59,11 @@ class Rarity(Enum):
     common = 'common'
     uncommon = 'uncommon'
     rare = 'rare'
+
+class Merchant(Enum):
+
+    fishmonger = 'Fishmonger'
+    drink_lady = 'Drink Lady'
 
 def testing():
     print(FishType.trout)
