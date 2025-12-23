@@ -1,5 +1,6 @@
 from string import ascii_uppercase
 from collections import Counter
+
 from enums import FishType, Location, Fly, ItemType, Powerup
 
 def menu(options=list, menu_text=str):
@@ -8,9 +9,9 @@ def menu(options=list, menu_text=str):
     print(menu_text)
     for item_num in range(len(options)):
         try:
-            print(f'{list(ascii_uppercase)[item_num]}) {options[item_num].value.capitalize()}')
+            print(f'{ascii_uppercase[item_num]}) {options[item_num].value.capitalize()}')
         except AttributeError:
-            print(f'{list(ascii_uppercase)[item_num]}) {str(options[item_num]).capitalize()}')
+            print(f'{ascii_uppercase[item_num]}) {str(options[item_num]).capitalize()}')
         # Will print like "A) Squid"
 
     # Taking input and translating to list item
@@ -53,10 +54,10 @@ def buy_menu(menu_text=str, items=list, price=dict):
     menu_legend = {}
     sell_opts = []
     
-    items_counted = Counter(items)
-    for itm in Counter(items):
+    items = Counter(items)
+    for itm in items:
         
-        menu_key = f"{itm.value} ({items_counted[itm]}x, ${price[itm]} each)"
+        menu_key = f"{itm.value} ({items[itm]}x, ${price[itm]} each)"
 
         menu_legend.update({menu_key:itm})
         sell_opts.append(menu_key)

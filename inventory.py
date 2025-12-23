@@ -1,8 +1,8 @@
 from string import ascii_uppercase
-from collections import Counter
+
 from flexible_menus import menu
 from enums import FishType, Location, Fly, ItemType
-from fish_data import fish_pools
+from fish_data import fish_pools, fish_values
 
 class Inventory:
   
@@ -14,14 +14,14 @@ class Inventory:
 
     flies: list[Fly] = [Fly.white]
     powerups: dict = {}
-    locations: list[Location] = [Location.dells]
+    locations: list[Location] = [Location.lake]
     
     # Set defaults
     fly: Fly = flies[0]
     location: Location = locations[0]
   
 
-  # Fish
+    # Fish
     def add_items(self, items, item_type=ItemType):
         
         if type(items) is list:
@@ -106,7 +106,9 @@ class Inventory:
             print('You already have this fly!')
 
     def change_fly(self):
+        print(f"You are currently using you {self.fly.value} fly.")
         self.fly = menu(self.flies,"What fly would you like to use?")
+        print(f"You are now using your {self.fly.value} fly!")
     
     
     # Fishing
@@ -135,7 +137,7 @@ class Inventory:
             Fly.red: [15,35,60],
             Fly.gold: [50,70,80],
 
-            Fly.dev: [33,66,100],
+            Fly.dev: [33,66,99],
             Fly.dev_shit: [0,1,2],
         }
         return fly_odds[self.fly]
@@ -148,22 +150,6 @@ class Inventory:
         self.money += change
 
     def get_value(self,fish=str):
-      
-        fish_values = {
-            
-            # Common fish
-            FishType.trout: 5,
-            
-            # Uncommon fish
-            FishType.smallmouth: 7,
-            FishType.salmon: 8,
-
-            # Rare fish
-            FishType.muskellunge: 13, 
-            FishType.steelhead: 16,
-            
-        }
-
         return fish_values.get(fish, 0)
     
     def purchase(self, buy_item, item_count=int, item_price=float, item_type=ItemType):
@@ -171,48 +157,52 @@ class Inventory:
             try: 
                 
                 buy_num = int(input(f'How many {buy_item.value} would you like to buy? (up to {item_count})\n'))
-                
-                if buy_num == 0:
-                    print('Sale cancelled')
-                    break
-
-                elif buy_num <= item_count:
-
-                    sale_price = buy_num * item_price
-                    
-                    if sale_price > self.money:
-                        print("You don't have that much money!")
-                        continue
-
-                    self.change_money(-1 * sale_price)
-                    self.add_items({buy_item:buy_num}, item_type)
-
-                    print(f'You bought {buy_num} {buy_item.value} for ${sale_price}.')
-
-                    return (item_count - buy_num)
-
-                else:
-                    print("That's more than are in stock!")
-                    
+            
             except ValueError:
                 print('Input only an integer (ex: 1)')
+                continue
+
+            if buy_num < 0:
+                print('You cannot purchase negative fish!')
+                continue
+
+            if buy_num == 0:
+                print('Sale cancelled')
+                return 0
+
+            if buy_num <= item_count:
+
+                sale_price = buy_num * item_price
+                
+                if sale_price > self.money:
+                    print("You don't have that much money!")
+                    continue
+
+                self.change_money(-1 * sale_price)
+                self.add_items({buy_item:buy_num}, item_type)
+
+                print(f'You bought {buy_num} {buy_item.value} for ${sale_price}.')
+
+                return (item_count - buy_num)
+
+            print("That's more than are in stock!")
 
     # Other
     def dev_mode(self):
         
         # Get all items in game
 
-        for item in Fly:
-            if item not in self.flies:
-                self.flies.append(item)
+        for itm in Fly:
+            if itm not in self.flies:
+                self.flies.append(itm)
 
-        for item in Location:
-            if item not in self.locations:
-                self.locations.append(item)
+        for itm in Location:
+            if itm not in self.locations:
+                self.locations.append(itm)
 
-        for item in FishType:
-            if item not in self.fish:
-                self.fish.update({item:1})
+        for itm in FishType:
+            if itm not in self.fish:
+                self.fish.update({itm:1})
 
         self.money = 999
         self.fly = Fly.dev

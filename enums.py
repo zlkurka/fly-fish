@@ -8,22 +8,27 @@ class FishType(Enum):
     # Uncommon
     smallmouth = 'smallmouth bass'
     salmon = 'coho salmon'
+    steel_head = 'steel head'
 
     # Rare
     steelhead = 'steelhead'
     muskellunge = 'muskellunge'
+    gold_fish = 'gold fish'
+        # Can be crafted into gold flakes
+    
+    # Dev
+    common_fish = 'common fish'
+    uncommon_fish = 'uncommon fish'
+    rare_fish = 'rare fish'
+    super_rare_fish = 'super rare fish'
 
 class Location(Enum):
 
-    # Old locations
-    dells = 'The Dells'
-    chicago = 'Chicago'
-
-    # New locations
     lake = 'the lake'
     river = 'the river'
     pond = 'the pond'
     overpass = 'the overpass'
+    quarry = 'the quarry'
 
     # Dev
     dev = 'DEV'
@@ -59,6 +64,7 @@ class Rarity(Enum):
     common = 'common'
     uncommon = 'uncommon'
     rare = 'rare'
+    super_rare = 'super rare'
 
 class Merchant(Enum):
 

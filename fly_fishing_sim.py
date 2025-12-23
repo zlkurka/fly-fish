@@ -1,7 +1,8 @@
-from random import randint, sample
+from random import randint, choice
 from collections import Counter
 from time import sleep
 from string import ascii_uppercase
+
 from inventory import Inventory
 from flexible_menus import menu, sell_menu, buy_menu
 from enums import FishType, Location, Fly, ItemType, Rarity, Merchant
@@ -21,8 +22,8 @@ def go_fishing(inventory=Inventory):
     # Fishing menu
     print('[RETURN]) Cast')
     for item_num in range(len(options)):
-        print(f'{list(ascii_uppercase)[item_num]}) {str(options[item_num]).capitalize()}')
-        # Will print like "A) Squid"
+        print(f'{ascii_uppercase[item_num]}) {str(options[item_num]).capitalize()}')
+        # Will print like "A) Change fly"
 
     # Taking input and translating to list item
     while True:
@@ -31,39 +32,36 @@ def go_fishing(inventory=Inventory):
 
         if selection == '':
             selection = 'Cast'
-        elif selection not in list(ascii_uppercase):
+        elif selection not in ascii_uppercase:
             print('Invalid input! Enter only the letter corresponding to your selection.')
-        elif list(ascii_uppercase).index(selection) > len(options) - 1:
+            continue
+        elif ascii_uppercase.index(selection) > len(options) - 1:
             print('Invalid input! This letter does not correspond to an option.')
+            continue
         else:
-            selection = options[list(ascii_uppercase).index(selection)]
+            selection = options[ascii_uppercase.index(selection)]
         
         match selection:
             case 'Cast':
 
                 print(f"You cast your line with your {inventory.fly.value} fly!")
-            
-                casting_time = cast_time[0] + randint(-1 * cast_time[1],cast_time[1])
 
                 # Sleeping for casting_time / 2, printing ellipsis every second
-                print_ellipsis = True
-                for secs in range(casting_time):
-                    print_ellipsis = not print_ellipsis
-                    if print_ellipsis:
+                for secs in range(cast_time[0] + randint(-1 * cast_time[1],cast_time[1])):
+                    if secs // 2 != secs / 2:
                         print('...')
                     sleep(.5)
 
                 # Determining catch
                 fish_chance = randint(1,100)
-                # Common
-                if fish_chance < odds[0]:
-                    fish = game[0]
-                # Uncommon
-                elif odds[0] <= fish_chance < odds[1]:
-                    fish = game[1]
-                # Rare
+                if fish_chance == 100:
+                    fish = choice(game[Rarity.super_rare])
                 elif odds[1] <= fish_chance < odds[2]:
-                    fish = game[2]
+                    fish = choice(game[Rarity.rare])
+                elif odds[0] <= fish_chance < odds[1]:
+                    fish = choice(game[Rarity.uncommon])
+                elif fish_chance < odds[0]:
+                    fish = choice(game[Rarity.common])
                 else:
                     fish = None
                 
@@ -75,9 +73,7 @@ def go_fishing(inventory=Inventory):
                     print("It was just some seaweed.")
             
             case 'Change fly':
-                print(f"You are currently using you {inventory.fly} fly.")
                 inventory.change_fly()
-                print(f"You are now using your {inventory.fly.value} fly!")
 
             case 'Leave':
                 
@@ -127,11 +123,11 @@ def market(inventory=Inventory):
                                 chance = randint(1,10)
                                 
                                 if 1 <= chance < 5:
-                                    stock.extend(sample(common_fish,1))
+                                    stock.append(choice(common_fish))
                                 elif 5 <= chance < 10:
-                                    stock.extend(sample(uncommon_fish,1))
+                                    stock.append(choice(uncommon_fish))
                                 elif chance == 10:
-                                    stock.extend(sample(rare_fish,1))
+                                    stock.append(choice(rare_fish))
                                 
                                 else:
                                     print('Failed to add fish')
@@ -140,8 +136,10 @@ def market(inventory=Inventory):
                             # Getting prices
                             prices = {}
                             for itm in stock:
-                                if itm in rare_fish:
-                                    prices.update({itm:randint(7,10)})
+                                if itm in prices:
+                                    pass
+                                elif itm in rare_fish:
+                                    prices.update({itm:randint(15,19)})
                                 elif itm in uncommon_fish:
                                     prices.update({itm:randint(7,10)})
                                 elif itm in common_fish:
@@ -149,11 +147,7 @@ def market(inventory=Inventory):
                                 else: 
                                     print('Fish not found!')
                             
-                            merch_output = merchant(inventory, stock, prices, ['Could I interest you in anything from my collection?','Interested in anything else?'],'Okay, bye-bye!','You want everything? Wow... keep it up and there might be something in store for you.', Merchant.fishmonger) 
-                            
-                            inventory = merch_output[0]
-                            stock = merch_output[1]
-                            prices = merch_output[2]
+                            inventory, stock, prices = merchant(inventory, stock, prices, ['Could I interest you in anything from my collection?','Interested in anything else?'],'Okay, bye-bye!','You want everything? Wow... keep it up and there might be something in store for you.', Merchant.fishmonger) 
                         
                         case 'Leave':
                             break
@@ -253,7 +247,7 @@ def merchant(inventory=Inventory, stock=list, prices=dict, menu_txts=list, exit_
     menu_text = menu_txts[0]
     
     while True:
-        
+
         buy_select = buy_menu(menu_text,stock,prices)
         
         # None
@@ -292,7 +286,7 @@ def merchant(inventory=Inventory, stock=list, prices=dict, menu_txts=list, exit_
             
             print(f"You bought everything for ${money_subtracted}, and have ${inventory.money} left.")
             print(buy_all_text)
-            return [inventory,stock,prices]
+            return inventory, stock, prices
         
         # Buy one
         new_item_count = inventory.purchase(buy_select, stock.count(buy_select), prices.get(buy_select), ItemType.fish)
