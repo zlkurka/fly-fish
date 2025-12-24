@@ -153,46 +153,81 @@ def go_fishing(inventory=Inventory):
 
 def market(inventory=Inventory):
     
+    visits = {
+        Merchant.drink_lady: False,
+        Merchant.fishmonger: False,
+    }
+
     print('Welcome to the market!')
     while True: 
         match menu(['Visit shops','Sell fish','Leave'],'What would you like to do?'):
             
             case 'Visit shops':
                 while True: 
-                    match menu(['Fishmonger','Leave'],'Who would you like to visit?'):
+                    match menu(['Drink Lady','Fishmonger','Leave'],'Who would you like to visit?'):
                         
                         case 'Drink Lady':
-                            print('Implementing soon!')
+                            
+                            if not visits[Merchant.drink_lady]:
+                                stock = []
+                                for iter in range(randint(1,3)):
+                                    stock.append(Powerup.sake)
+                                for iter in range(randint(2,5)):
+                                    stock.append(Powerup.coffee)
+                                
+                                prices = {
+                                    Powerup.sake: randint(40,60),
+                                    Powerup.coffee: randint(20,35),
+                                }
+
+                                if randint(1,10) == 10:
+                                    stock.append(Powerup.gold_flakes)
+                                    prices.update({Powerup.gold_flakes: randint(80,100)})
+                                
+                                visits.update({Merchant.drink_lady: True})
+                            
+                            if not stock:
+                                print("Sorry, carissima, I have nothing left today.")
+                                continue
+
+                            inventory, stock, prices = merchant(inventory, stock, prices, ['Thirsty?','Craving anything else?'],'Arrivederci...','Try not to waste it...''.', Merchant.drink_lady) 
+
 
                         case 'Fishmonger':                            
-
-                            # Getting stock
-                            stock = []
-                            for iter in range(5):
-                                
-                                chance = randint(1,10)
-                                
-                                if 1 <= chance < 5:
-                                    stock.append(choice(fish_rarities[Rarity.common]))
-                                elif 5 <= chance < 10:
-                                    stock.append(choice(fish_rarities[Rarity.uncommon]))
-                                elif chance == 10:
-                                    stock.append(choice(fish_rarities[Rarity.rare]))
-                                
-                                else:
-                                    print('Failed to add fish')
-                                    stock.append(FishType.trout)
                             
-                            # Getting prices
-                            prices = {}
-                            for itm in stock:
-                                if itm in prices:
-                                    pass
-                                elif itm in fish_values:
-                                    prices.update({itm: int(Decimal(fish_values[itm] * (1 + randint(0,7) / 10)).quantize(1, rounding=ROUND_HALF_UP))})
-                                else:
-                                    print(f'{itm.value.capitalize()} value not found!')
+                            if not visits[Merchant.fishmonger]:
+                                # Getting stock
+                                stock = []
+                                for iter in range(5):
+                                    
+                                    chance = randint(1,10)
+                                    
+                                    if 1 <= chance < 5:
+                                        stock.append(choice(fish_rarities[Rarity.common]))
+                                    elif 5 <= chance < 10:
+                                        stock.append(choice(fish_rarities[Rarity.uncommon]))
+                                    elif chance == 10:
+                                        stock.append(choice(fish_rarities[Rarity.rare]))
+                                    
+                                    else:
+                                        print('Failed to add fish')
+                                        stock.append(FishType.trout)
+                                
+                                # Getting prices
+                                prices = {}
+                                for itm in stock:
+                                    if itm in prices:
+                                        pass
+                                    elif itm in fish_values:
+                                        prices.update({itm: int(Decimal(fish_values[itm] * (1 + randint(0,7) / 10)).quantize(1, rounding=ROUND_HALF_UP))})
+                                    else:
+                                        print(f'{itm.value.capitalize()} value not found!')
+                                
+                                visits.update({Merchant.fishmonger: True})
                             
+                            if not stock:
+                                print("Sorry, you've taken all I have to offer today.")
+                                continue
                             inventory, stock, prices = merchant(inventory, stock, prices, ['Could I interest you in anything from my collection?','Interested in anything else?'],'Okay, bye-bye!','You want everything? Wow... keep it up and there might be something in store for you.', Merchant.fishmonger) 
                         
                         case 'Leave':
@@ -317,7 +352,7 @@ def merchant(inventory=Inventory, stock=list, prices=dict, menu_txts=list, exit_
                 return inventory, stock, prices
 
 
-            for itm in stock:
+            for itm in list(stock):
                 
                 # Add sus fish
                 if merchant_name == Merchant.fishmonger and randint(1,4) == 4:

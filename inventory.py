@@ -310,7 +310,7 @@ class Inventory:
                 self.locations.append(itm)
 
         for itm in FishType:
-            if itm not in self.fish:
+            if itm not in self.fish and itm not in [FishType.common_fish,FishType.uncommon_fish,FishType.rare_fish,FishType.super_rare_fish,FishType.legendary_fish]:
                 self.fish.update({itm:1})
         
         for itm in Powerup:

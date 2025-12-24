@@ -1,7 +1,5 @@
 # Ideas for future changes
 ## Modifications
-### Inventory
-- Add options to display `flies`, `locations`.
 ### Main menu
 - Only display options that are possible for player (e.g., no travel option if player only has one `location` unlocked).
 ### Market
@@ -16,10 +14,6 @@ What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 - Only allow buying of fish from locations the player has unlocked? Maybe I can use the list of each fish type the player has caught for this
 ### Powerups
 - Figure out powerup merchant
-- Add powerups option to `go_fishing`.
-- **Sake**: increases "fishing power" (`odds`?).
-- **Coffee grounds**: throw into the water to make fish faster, decreases `cast_time` (make sure can't go below zero).
-- **Gold flakes**: increase fish tier by 1 (allows super rare catches).
 - **Dissolving melatonin**: makes fish sleepy (more able to catch with a net?).
 ### Crafting
 - Can craft **fish** into other items (**flies**, **powerups**, etc.).
