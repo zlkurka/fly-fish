@@ -4,15 +4,19 @@ class FishType(Enum):
 
     # Common
     trout = 'brown trout'
+    rock_fish = 'rock fish'
     
     # Uncommon
     smallmouth = 'smallmouth bass'
     salmon = 'coho salmon'
-    steel_head = 'steel head'
+    steel_head_trout = 'steel-head trout'
 
     # Rare
     steelhead = 'steelhead'
     muskellunge = 'muskellunge'
+    silver_salmon = 'silver salmon'
+
+    # Super rare
     gold_fish = 'gold fish'
         # Can be crafted into gold flakes
     
@@ -21,17 +25,18 @@ class FishType(Enum):
     uncommon_fish = 'uncommon fish'
     rare_fish = 'rare fish'
     super_rare_fish = 'super rare fish'
+    legendary_fish = 'legendary fish'
 
 class Location(Enum):
 
+    # In progress
     lake = 'the lake'
     river = 'the river'
-    pond = 'the pond'
-    overpass = 'the overpass'
     quarry = 'the quarry'
 
-    # Dev
-    dev = 'DEV'
+    # Not made yet
+    pond = 'the pond'
+    overpass = 'the overpass'
 
 class Fly(Enum):
     
@@ -53,11 +58,6 @@ class Powerup(Enum):
     coffee = 'coffee grounds'
     gold_flakes = 'gold flakes'
 
-class ItemType(Enum):
-
-    fish = 'fish'
-    sus_fish = 'suspicious fish'
-
 class Rarity(Enum):
     
     # Rarities
@@ -65,17 +65,11 @@ class Rarity(Enum):
     uncommon = 'uncommon'
     rare = 'rare'
     super_rare = 'super rare'
+    legendary = 'legendary'
 
 class Merchant(Enum):
 
     fishmonger = 'Fishmonger'
     drink_lady = 'Drink Lady'
 
-def testing():
-    print(FishType.trout)
-    print(FishType.trout.value.capitalize())
-    print(FishType.trout.name.upper())
-
-    print(type(FishType.trout))
-    print(type(FishType.trout.name))
-    print(type(FishType.trout.value))
+item_enums = [FishType, Location, Fly, Powerup]

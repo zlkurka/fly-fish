@@ -1,8 +1,6 @@
 from string import ascii_uppercase
 from collections import Counter
 
-from enums import FishType, Location, Fly, ItemType, Powerup
-
 def menu(options=list, menu_text=str):
 
     # Printing menu
@@ -28,45 +26,32 @@ def menu(options=list, menu_text=str):
         else:
             return options[list(ascii_uppercase).index(selection)]
 
-def sell_menu(menu_text=str, items=dict, price=dict):
-
+def counting_menu(items, menu_text=str, *prices):
+    
     menu_legend = {}
-    sell_opts = []
+    options = []
     
-    for sell_item in items:
-        
-        menu_key = f'{sell_item.value} ({items[sell_item]}x, ${price.get(sell_item)} each)'
-
-        menu_legend.update({menu_key:sell_item})
-        sell_opts.append(menu_key)
-        
-    sell_opts.extend(['Sell all', None])
-
-    selection = menu(sell_opts, menu_text)
+    if type(items) == list:
+        items = Counter(items)
     
-    if selection == None or selection == 'Sell all':
-        return selection
-
-    return menu_legend.get(selection)
-    
-def buy_menu(menu_text=str, items=list, price=dict):
-
-    menu_legend = {}
-    sell_opts = []
-    
-    items = Counter(items)
+    # Assembling menu
     for itm in items:
         
-        menu_key = f"{itm.value} ({items[itm]}x, ${price[itm]} each)"
+        if prices:
+            menu_key = f'{itm.value} ({items[itm]}x, ${prices[0][itm]} each)'
+        else:
+            menu_key = f'{itm.value} ({items[itm]}x)'
 
-        menu_legend.update({menu_key:itm})
-        sell_opts.append(menu_key)
+        menu_legend.update({menu_key: itm})
+        options.append(menu_key)
         
-    sell_opts.extend(['Buy all',None])
+    if len(items) > 1:
+        options.append('All')
+    options.append(None)
 
-    selection = menu(sell_opts, menu_text)
+    selection = menu(options, menu_text)
     
-    if not selection or selection == 'Buy all':
+    if selection == None or selection == 'All':
         return selection
-    else:
-        return menu_legend.get(selection)
+
+    return menu_legend[selection]
