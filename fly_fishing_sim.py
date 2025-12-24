@@ -136,13 +136,14 @@ def go_fishing(inventory=Inventory):
 
                 else: 
                     
-                    fish_caught = Counter(fish_caught)
+                    fish_caught = dict(Counter(fish_caught))
 
                     print('You caught:')
                     for fsh in fish_caught:
                         print(f"- {fish_caught[fsh]} {fsh.value}")
 
-                    inventory.add_items(fish_caught)
+                    for fsh in fish_caught:
+                        inventory.add_items({fsh: fish_caught[fsh]})
 
                 return inventory
             

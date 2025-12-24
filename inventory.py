@@ -73,7 +73,9 @@ class Inventory:
             item_type = type(item)
         else:
             print('Unacceptable item type!')
-            item_type == type(item)
+            item_name = item
+            item_count = 1
+            item_type = type(item)
 
         item_type = type(list(item)[0])
 
@@ -230,7 +232,7 @@ class Inventory:
             print(f"{selection.value.capitalize()} is already active.")
 
         # Particular powerup
-        elif selection != 'None':
+        elif selection:
             self.remove_items(selection)
             casts = powerup_casts[selection]
 
