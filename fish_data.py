@@ -69,7 +69,8 @@ fish_values = {
     FishType.common_fish: 5,
     FishType.uncommon_fish: 10,
     FishType.rare_fish: 15,
-    FishType.super_rare_fish: 25
+    FishType.super_rare_fish: 25,
+    FishType.legendary_fish: 100,
             
 }
 
