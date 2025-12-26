@@ -6,7 +6,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from inventory import Inventory
 from flexible_menus import menu, counting_menu
-from enums import FishType, Rarity, Merchant, Powerup
+from enums import FishType, Powerup, Rarity, Merchant
 from fish_data import fish_rarities, fish_values
 
 def go_fishing(inventory=Inventory):
@@ -20,7 +20,12 @@ def go_fishing(inventory=Inventory):
     rarities = [Rarity.common,Rarity.uncommon,Rarity.rare,Rarity.super_rare]
 
     print(f"At {inventory.location.value}, you attach your {inventory.fly.value} fly to your fishing line and wade into the water.")
-    options = ['Change fly','Use a powerup','Leave']
+    options = ['Leave']
+    
+    if inventory.powerups:
+        options.insert(0, 'Use a powerup')
+    if len(inventory.flies) > 1:
+        options.insert(0, 'Change fly')
 
     # Fishing menu
     print('[RETURN]) Cast')
@@ -397,7 +402,12 @@ def main():
     
     # Main menu
     while True:
-        match menu(['Go fishing','Go to the market','Check inventory','Travel'], 'What would you like to do?'):
+        
+        menu_opts = ['Go fishing','Go to the market','Check inventory','End the day']
+        if len(inventory.locations) > 1:
+            menu_opts.insert(3, 'Travel')
+        
+        match menu(menu_opts, 'What would you like to do?'):
             
             case 'Go fishing':
                 inventory = go_fishing(inventory)
@@ -410,6 +420,9 @@ def main():
             
             case 'Travel':
                 inventory.travel()
+
+            case 'End the day':
+                print('Implementing soon!')
             
             case _: 
                 print('Invalid option!')

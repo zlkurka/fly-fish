@@ -51,9 +51,14 @@ class Inventory:
                         print(f"- {itm.value.capitalize()}")
 
                 case 'Powerups':
-                    print('You have:')
-                    for itm in self.powerups:
-                        print(f"- {itm.value.capitalize()} ({self.powerups[itm]}x)")
+                    
+                    if not self.powerups:
+                        print("You don't have any powerups!")
+
+                    else: 
+                        print('You have:')
+                        for itm in self.powerups:
+                            print(f"- {itm.value.capitalize()} ({self.powerups[itm]}x)")
 
                 case 'Exit':
                     break
@@ -194,6 +199,20 @@ class Inventory:
         self.fly = menu(self.flies,"What fly would you like to use?")
         print(f"You are now using your {self.fly.value} fly!")
     
+    def travel(self):
+        
+        if len(self.locations) == 1:
+            print(f'You can only access {self.locations[0]} right now')
+
+        old_loc = self.location
+        self.location = menu(self.locations, 'Where would you like to go?')
+        
+        if self.location == old_loc:
+            print(f'You decide to stay at {self.location.value}.')
+            return
+        
+        print(f'You travel from {old_loc.value} to {self.location.value}.')
+    
     
     # Fishing
     def get_time(self):
@@ -241,19 +260,6 @@ class Inventory:
         
         return added_pups
     
-    def travel(self):
-        
-        if len(self.locations) == 1:
-            print(f'You can only access {self.locations[0]} right now')
-
-        old_loc = self.location
-        self.location = menu(self.locations, 'Where would you like to go?')
-        
-        if self.location == old_loc:
-            print(f'You decide to stay at {self.location.value}.')
-            return
-        
-        print(f'You travel from {old_loc.value} to {self.location.value}.')
 
     # Shopping
     def change_money(self, change=int):
