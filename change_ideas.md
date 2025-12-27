@@ -1,18 +1,15 @@
 # Ideas for future changes
 ## Modifications
-### Main menu
-- Only display options that are possible for player (e.g., no travel option if player only has one `location` unlocked).
 ### Market
 - Proportional variability in sell-prices.
-### Time
-Right now, you can just fish forever and refresh a shop just by returning to the main menu. I need days to pass, and for that I need there to be a cost for time passing, which is probably food and/or the encroach of doom.
-## Additions
-### Market
-What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
+- What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 #### Fishmonger
 - Only allow buying of fish from locations the player has unlocked? Maybe I can use the list of each fish type the player has caught for this.
+## Additions
+### Time
+Right now, you can just fish forever and refresh a shop just by returning to the main menu. I need days to pass, and for that I need there to be a cost for time passing, which is probably food and/or the encroach of doom.
 ### Powerups
-- **Dissolving melatonin**: makes fish sleepy (more able to catch with a net?).
+- **Dissolving melatonin**: makes fish sleepy? (I'm not really sure what this would do)
 ### Crafting
 - Can craft **fish** into other items (**flies**, **powerups**, etc.).
 - Need recipes from the Fisherman to craft flies.
@@ -20,6 +17,7 @@ What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 - **Suspicious fish** have a chance for bonus crafting materials (e.g. hooks).
 Recipes
 - Gold fish -> gold flakes
+- Fish (+ fire?) -> food
 - What if you could get a bell and combine it with some hooks to make an awesome bell hooks reference? I feel like I'm not familiar enough with her work to do that
 ### Journal
 Contains a list of each fish type you've caught (and maybe on what day?).
@@ -43,9 +41,12 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
   - Is secretly some sort of angler fish guy. I'll figure it out.
 - **The Drink Lady**
   - This is a filler name for an NPC who will sell **Sake** and **Coffee grounds**, and maybe some other powerups. I need to figure out who and how I want her to be.
+  - A sweet older Italian lady :)
 - Other market NPCs.
 
 Would need to be location-based.
 # Next steps
 - ADD CRAFTING!!!
+- Add fish journal
+- Add passage of time
 - Add super rare and legendary fish to pools where needed.

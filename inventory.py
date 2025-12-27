@@ -1,5 +1,3 @@
-from string import ascii_uppercase
-
 from flexible_menus import menu, counting_menu
 from enums import FishType, Location, Fly, Powerup, item_enums
 from fish_data import fish_pools, fish_values, powerup_casts, fly_odds, fly_times
@@ -15,11 +13,13 @@ class Inventory:
     flies: list[Fly] = [Fly.white]
     powerups: dict = {}
     locations: list[Location] = [Location.lake]
-    
+
+    recipes: dict = {}
+
     # Set defaults
     fly: Fly = flies[0]
     location: Location = locations[0]
-  
+    
 
     # Manage inv
     def check_inv(self):
@@ -32,7 +32,7 @@ class Inventory:
                     
                     if not self.fish and not self.sus_fish:
                         print("You don't have any fish!")
-
+                    
                     else: 
                         print('You have:')
                         for itm in self.fish:
@@ -59,10 +59,10 @@ class Inventory:
                         print('You have:')
                         for itm in self.powerups:
                             print(f"- {itm.value.capitalize()} ({self.powerups[itm]}x)")
-
+                
                 case 'Exit':
                     break
-
+                
                 case _:
                     print('Invalid option!')
 
@@ -191,7 +191,30 @@ class Inventory:
         # Unacceptable
         else:
             print('Unacceptable item type!')
-    
+
+    def dev_mode(self):
+        
+        # Get all items in game
+
+        for itm in Fly:
+            if itm not in self.flies:
+                self.flies.append(itm)
+
+        for itm in Location:
+            if itm not in self.locations:
+                self.locations.append(itm)
+
+        for itm in FishType:
+            if itm not in self.fish and itm not in [FishType.common_fish,FishType.uncommon_fish,FishType.rare_fish,FishType.super_rare_fish,FishType.legendary_fish]:
+                self.fish.update({itm:1})
+        
+        for itm in Powerup:
+            if itm not in self.powerups:
+                self.powerups.update({itm:99})
+
+        self.money = 999
+        self.fly = Fly.dev    
+
 
     # Change equipped
     def change_fly(self):
@@ -301,27 +324,3 @@ class Inventory:
                 return item_count - buy_num
 
             print("That's more than are in stock!")
-
-    # Other
-    def dev_mode(self):
-        
-        # Get all items in game
-
-        for itm in Fly:
-            if itm not in self.flies:
-                self.flies.append(itm)
-
-        for itm in Location:
-            if itm not in self.locations:
-                self.locations.append(itm)
-
-        for itm in FishType:
-            if itm not in self.fish and itm not in [FishType.common_fish,FishType.uncommon_fish,FishType.rare_fish,FishType.super_rare_fish,FishType.legendary_fish]:
-                self.fish.update({itm:1})
-        
-        for itm in Powerup:
-            if itm not in self.powerups:
-                self.powerups.update({itm:99})
-
-        self.money = 999
-        self.fly = Fly.dev

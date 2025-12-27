@@ -9,6 +9,7 @@ from flexible_menus import menu, counting_menu
 from enums import FishType, Powerup, Rarity, Merchant
 from fish_data import fish_rarities, fish_values
 
+
 def go_fishing(inventory=Inventory):
     
     fish_caught = []

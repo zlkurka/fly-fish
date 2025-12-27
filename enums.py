@@ -20,6 +20,9 @@ class FishType(Enum):
     gold_fish = 'gold fish'
         # Can be crafted into gold flakes
     
+    # Legendary
+    diamond_tetra = 'diamond tetra'
+
     # Dev
     common_fish = 'common fish'
     uncommon_fish = 'uncommon fish'

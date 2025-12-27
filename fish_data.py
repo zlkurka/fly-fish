@@ -1,24 +1,5 @@
 from enums import FishType, Location, Rarity, Powerup, Fly
 
-def get_rarities():
-    fish_rarities = {
-        Rarity.common: [],
-        Rarity.uncommon: [],
-        Rarity.rare: [],
-        Rarity.super_rare: [],
-        Rarity.legendary: [],
-    }
-    
-    for loc in fish_pools:
-        for rar in Rarity:
-            
-            if fish_rarities[rar]:
-                fish_rarities.update({rar: list(set(fish_rarities[rar] + fish_pools[loc][rar]))})
-            else:
-                fish_rarities.update({rar: fish_pools[loc][rar]})
-    
-    return fish_rarities
-
 fish_pools = {
 
     Location.lake: {
@@ -40,9 +21,28 @@ fish_pools = {
         Rarity.uncommon: [FishType.steel_head_trout],
         Rarity.rare: [FishType.silver_salmon],
         Rarity.super_rare: [FishType.gold_fish],
-        Rarity.legendary: [FishType.legendary_fish],
+        Rarity.legendary: [FishType.diamond_tetra],
     },
 }
+
+def get_rarities():
+    fish_rarities = {
+        Rarity.common: [],
+        Rarity.uncommon: [],
+        Rarity.rare: [],
+        Rarity.super_rare: [],
+        Rarity.legendary: [],
+    }
+    
+    for loc in fish_pools:
+        for rar in Rarity:
+            
+            if fish_rarities[rar]:
+                fish_rarities.update({rar: list(set(fish_rarities[rar] + fish_pools[loc][rar]))})
+            else:
+                fish_rarities.update({rar: fish_pools[loc][rar]})
+    
+    return fish_rarities
 
 fish_rarities = get_rarities()
 
