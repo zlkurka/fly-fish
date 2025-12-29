@@ -1,5 +1,7 @@
 from enums import FishType, Location, Rarity, Powerup, Fly
 
+# Fish
+
 fish_pools = {
 
     Location.lake: {
@@ -25,7 +27,7 @@ fish_pools = {
     },
 }
 
-def get_rarities():
+def set_rarities():
     fish_rarities = {
         Rarity.common: [],
         Rarity.uncommon: [],
@@ -44,7 +46,7 @@ def get_rarities():
     
     return fish_rarities
 
-fish_rarities = get_rarities()
+fish_rarities = set_rarities()
 
 fish_values = {
             
@@ -93,6 +95,9 @@ fish_materials = {
     FishType.gold_fish: [Powerup.gold_flakes],
 }
 
+
+# Flies
+
 fly_odds = {
             
     # [0]% chance to catch a common fish, [1]-[0]% chance for uncommon, [2]-[1]-[0]% for rare
@@ -117,8 +122,16 @@ fly_times = {
     Fly.dev_shit: [2,0],
 }
 
-powerup_casts = {
 
+# Powerups
+
+powerup_casts = {
+    
+    # I'm not sure if sake is actually worth the price. 
+    # It costs between $40 and $60 and only gives you a 15% higher chance 
+    # to catch a fish overall for 10 casts. I'd need to do the math, but that
+    # might not return more money on average, though it could depend on the 
+    # location and fly.
     Powerup.sake: 10,
     Powerup.coffee: 15,
     Powerup.gold_flakes: 10,

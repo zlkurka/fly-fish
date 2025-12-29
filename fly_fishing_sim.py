@@ -182,8 +182,8 @@ def market(inventory=Inventory):
                                     stock.append(Powerup.coffee)
                                 
                                 prices = {
-                                    Powerup.sake: randint(40,60),
-                                    Powerup.coffee: randint(20,35),
+                                    Powerup.sake: randint(20,35),
+                                    Powerup.coffee: randint(10,25),
                                 }
 
                                 if randint(1,10) == 10:
@@ -404,7 +404,7 @@ def main():
     # Main menu
     while True:
         
-        menu_opts = ['Go fishing','Go to the market','Check inventory','End the day']
+        menu_opts = ['Go fishing','Go to the market','Check inventory','End the day','Exit game']
         if len(inventory.locations) > 1:
             menu_opts.insert(3, 'Travel')
         
@@ -424,6 +424,19 @@ def main():
 
             case 'End the day':
                 print('Implementing soon!')
+            
+            case 'Exit game':
+                match menu(['Leave','Keep playing'], "Are you sure you'd like to exit?"):
+
+                    case 'Leave':
+                        print('Thanks for playing!')
+                        exit()
+
+                    case 'Keep playing':
+                        continue
+
+                    case _:
+                        print('Invalid option!')
             
             case _: 
                 print('Invalid option!')

@@ -319,7 +319,7 @@ class Inventory:
                 self.change_money(-1 * sale_price)
                 self.add_items({buy_item: buy_num})
 
-                print(f'You bought {buy_num} {buy_item.value} for ${sale_price}.')
+                print(f'You bought {buy_num} {buy_item.value} for ${sale_price} and have ${self.money} left')
 
                 return item_count - buy_num
 
