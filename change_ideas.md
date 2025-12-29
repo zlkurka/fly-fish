@@ -43,10 +43,10 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
   - This is a filler name for an NPC who will sell **Sake** and **Coffee grounds**, and maybe some other powerups. I need to figure out who and how I want her to be.
   - A sweet older Italian lady :)
 - Other market NPCs.
+### Nick shit
+- during the early morning and at night, larger fish are closer to the surface, whereas in the midday they're clsoer to the water
 
 Would need to be location-based.
 # Next steps
 - ADD CRAFTING!!!
-- Add fish journal
-- Add passage of time
 - Add super rare and legendary fish to pools where needed.

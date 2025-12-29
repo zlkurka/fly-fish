@@ -1,7 +1,5 @@
 from enums import FishType, Location, Rarity, Powerup, Fly
 
-# Fish
-
 fish_pools = {
 
     Location.lake: {
@@ -126,13 +124,12 @@ fly_times = {
 # Powerups
 
 powerup_casts = {
-    
-    # I'm not sure if sake is actually worth the price. 
-    # It costs between $40 and $60 and only gives you a 15% higher chance 
-    # to catch a fish overall for 10 casts. I'd need to do the math, but that
-    # might not return more money on average, though it could depend on the 
-    # location and fly.
+
     Powerup.sake: 10,
     Powerup.coffee: 15,
     Powerup.gold_flakes: 10,
+}
+
+recipes = {
+    Powerup.gold_flakes: {FishType.gold_fish: 1}
 }
