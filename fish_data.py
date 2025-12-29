@@ -1,5 +1,7 @@
 from enums import FishType, Location, Rarity, Powerup, Fly
 
+# Fish
+
 fish_pools = {
 
     Location.lake: {
@@ -129,6 +131,9 @@ powerup_casts = {
     Powerup.coffee: 15,
     Powerup.gold_flakes: 10,
 }
+
+
+# Crafting
 
 recipes = {
     Powerup.gold_flakes: {FishType.gold_fish: 1}

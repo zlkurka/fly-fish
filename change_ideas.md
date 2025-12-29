@@ -1,13 +1,13 @@
 # Ideas for future changes
 ## Modifications
 ### Market
-- Proportional variability in sell-prices.
 - What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 #### Fishmonger
 - Only allow buying of fish from locations the player has unlocked? Maybe I can use the list of each fish type the player has caught for this.
 ## Additions
 ### Time
 Right now, you can just fish forever and refresh a shop just by returning to the main menu. I need days to pass, and for that I need there to be a cost for time passing, which is probably food and/or the encroach of doom.
+- During the early morning and at night, larger fish are closer to the surface, whereas in the midday they're closer to the water
 ### Powerups
 - **Dissolving melatonin**: makes fish sleepy? (I'm not really sure what this would do)
 ### Crafting
@@ -43,10 +43,10 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
   - This is a filler name for an NPC who will sell **Sake** and **Coffee grounds**, and maybe some other powerups. I need to figure out who and how I want her to be.
   - A sweet older Italian lady :)
 - Other market NPCs.
-### Nick shit
-- during the early morning and at night, larger fish are closer to the surface, whereas in the midday they're clsoer to the water
 
 Would need to be location-based.
 # Next steps
 - ADD CRAFTING!!!
+- Add fish journal
+- Add passage of time
 - Add super rare and legendary fish to pools where needed.

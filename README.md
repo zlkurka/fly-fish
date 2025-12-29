@@ -4,7 +4,9 @@ Here is the code for my fly-fishing simulator game. I want to make a bigger, sto
 
 The game currently runs when executed through a code editing software. I don't really know if that's the right way to explain it. I just run my code in VS Code and I can play the game. You understand.
 
-The code is executed from "fly_fishing_sim.py". Idk if this is how people normally organize these things
+The code is executed from "fly_fishing_sim.py". Idk if this is how people normally organize these things. I'm currently working on a Mac-compatible executable file and a TUI interface using Textual, but neither of those work yet.
+
+Check out change_ideas.md for my planned changes to the game!
 
 So! What can you do in this "game"?
 - You can go fly fishing! That's probably the most important part
