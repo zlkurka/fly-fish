@@ -274,12 +274,14 @@ class Inventory:
             print(f"{selection.value.capitalize()} is already active.")
 
         # Particular powerup
-        elif selection:
+        elif type(selection) == Powerup:
             self.remove_items(selection)
             casts = powerup_casts[selection]
 
             added_pups.update({selection: casts})
             print(f"{selection.value.capitalize()} is now active for {casts} casts.")
+        else:
+            print('Invalid powerup!')
         
         return added_pups
     

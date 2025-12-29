@@ -7,7 +7,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from inventory import Inventory
 from flexible_menus import menu, counting_menu
 from enums import FishType, Powerup, Rarity, Merchant
-from fish_data import fish_rarities, fish_values
+from fish_data import fish_rarities, fish_values, powerup_values
 
 
 def go_fishing(inventory=Inventory):
@@ -180,15 +180,11 @@ def market(inventory=Inventory):
                                     stock.append(Powerup.sake)
                                 for iter in range(randint(2,5)):
                                     stock.append(Powerup.coffee)
-                                
-                                prices = {
-                                    Powerup.sake: randint(20,35),
-                                    Powerup.coffee: randint(10,25),
-                                }
 
                                 if randint(1,10) == 10:
                                     stock.append(Powerup.gold_flakes)
-                                    prices.update({Powerup.gold_flakes: randint(80,100)})
+                                
+                                prices = get_prices(stock, 1.6)
                                 
                                 visits.update({Merchant.drink_lady: True})
                             
@@ -220,14 +216,7 @@ def market(inventory=Inventory):
                                         stock.append(FishType.trout)
                                 
                                 # Getting prices
-                                prices = {}
-                                for itm in stock:
-                                    if itm in prices:
-                                        pass
-                                    elif itm in fish_values:
-                                        prices.update({itm: int(Decimal(fish_values[itm] * (1 + randint(0,7) / 10)).quantize(1, rounding=ROUND_HALF_UP))})
-                                    else:
-                                        print(f'{itm.value.capitalize()} value not found!')
+                                prices = get_prices(stock, 1.7)
                                 
                                 visits.update({Merchant.fishmonger: True})
                             
@@ -388,6 +377,24 @@ def merchant(inventory=Inventory, stock=list, prices=dict, menu_txts=list, exit_
                 inventory.add_items({buy_select:1}, True)
 
         menu_text = menu_txts[1]
+
+
+def get_prices(stock=list, max_prop=float):
+    
+    if FishType == type(stock[0]):
+        values = fish_values
+    elif Powerup == type(stock[0]):
+        values = powerup_values
+    
+    prices = {}
+    for itm in stock:
+        if itm in prices:
+            continue
+        elif itm in values:
+            prices.update({itm: int(Decimal(values[itm] * (1 + (randint(0, int((max_prop - 1) * 10)) / 10))).quantize(1, rounding=ROUND_HALF_UP))})
+        else:
+            print(f'{itm.value.capitalize()} value not found!')
+    return prices
 
 
 def main():

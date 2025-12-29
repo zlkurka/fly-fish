@@ -1,4 +1,8 @@
 # Ideas for future changes
+## Long-term vision
+- Migrate to Godot 
+- Point-and-click style
+- Pixel graphics (will probably have to enlist some help)
 ## Modifications
 ### Market
 - What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
@@ -46,6 +50,7 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
 
 Would need to be location-based.
 # Next steps
+- Migrate to Textual TUI
 - ADD CRAFTING!!!
 - Add fish journal
 - Add passage of time

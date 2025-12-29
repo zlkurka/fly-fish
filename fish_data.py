@@ -1,4 +1,4 @@
-from enums import FishType, Location, Rarity, Powerup, Fly
+from enums import FishType, Location, Rarity, Powerup, Fly, Merchant
 
 # Fish
 
@@ -48,34 +48,6 @@ def set_rarities():
 
 fish_rarities = set_rarities()
 
-fish_values = {
-            
-    # Common fish
-    FishType.trout: 5,
-    FishType.rock_fish: 3,
-    
-    # Uncommon fish
-    FishType.smallmouth: 7,
-    FishType.salmon: 8,
-    FishType.steel_head_trout: 14,
-
-    # Rare fish
-    FishType.muskellunge: 13, 
-    FishType.steelhead: 16,
-    FishType.silver_salmon: 25,
-
-    # Super rare fish
-    FishType.gold_fish: 50,
-
-    # Dev
-    FishType.common_fish: 5,
-    FishType.uncommon_fish: 10,
-    FishType.rare_fish: 15,
-    FishType.super_rare_fish: 25,
-    FishType.legendary_fish: 100,
-            
-}
-
 fish_materials = {
             
     # Common fish
@@ -123,6 +95,42 @@ fly_times = {
 }
 
 
+# Shopping
+
+fish_values = {
+            
+    # Common fish
+    FishType.trout: 5,
+    FishType.rock_fish: 3,
+    
+    # Uncommon fish
+    FishType.smallmouth: 7,
+    FishType.salmon: 8,
+    FishType.steel_head_trout: 14,
+
+    # Rare fish
+    FishType.muskellunge: 13, 
+    FishType.steelhead: 16,
+    FishType.silver_salmon: 25,
+
+    # Super rare fish
+    FishType.gold_fish: 50,
+
+    # Dev
+    FishType.common_fish: 5,
+    FishType.uncommon_fish: 10,
+    FishType.rare_fish: 15,
+    FishType.super_rare_fish: 25,
+    FishType.legendary_fish: 100,
+            
+}
+
+powerup_values = {
+    Powerup.sake: 20,
+    Powerup.coffee: 10,
+    Powerup.gold_flakes: 75,
+}
+
 # Powerups
 
 powerup_casts = {
@@ -136,5 +144,6 @@ powerup_casts = {
 # Crafting
 
 recipes = {
+    
     Powerup.gold_flakes: {FishType.gold_fish: 1}
 }
