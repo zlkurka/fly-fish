@@ -25,6 +25,20 @@ fish_pools = {
         Rarity.super_rare: [FishType.gold_fish],
         Rarity.legendary: [FishType.diamond_tetra],
     },
+    Location.hell: {
+        Rarity.common: [FishType.hell_crab_b],
+        Rarity.uncommon: [FishType.hell_crab_p],
+        Rarity.rare: [FishType.satan_eel],
+        Rarity.super_rare: [FishType.angel_fish],
+        Rarity.legendary: [FishType.biblical_angel],
+    },
+    Location.blank: {
+        Rarity.common: [FishType.common_fish],
+        Rarity.uncommon: [FishType.uncommon_fish],
+        Rarity.rare: [FishType.rare_fish],
+        Rarity.super_rare: [FishType.super_rare_fish],
+        Rarity.legendary: [FishType.legendary_fish],
+    },
 }
 
 def set_rarities():

@@ -5,23 +5,27 @@ class FishType(Enum):
     # Common
     trout = 'brown trout'
     rock_fish = 'rock fish'
+    hell_crab_b = 'blue hell-crab'
     
     # Uncommon
     smallmouth = 'smallmouth bass'
     salmon = 'coho salmon'
     steel_head_trout = 'steel-head trout'
+    hell_crab_p = 'periwinkle hell-crab'
 
     # Rare
     steelhead = 'steelhead'
     muskellunge = 'muskellunge'
     silver_salmon = 'silver salmon'
+    satan_eel = 'satan eel'
 
     # Super rare
     gold_fish = 'gold fish'
-        # Can be crafted into gold flakes
+    angel_fish = 'angel fish'
     
     # Legendary
     diamond_tetra = 'diamond tetra'
+    biblical_angel = 'biblically accurate angelfish'
 
     # Dev
     common_fish = 'common fish'
@@ -31,6 +35,8 @@ class FishType(Enum):
     legendary_fish = 'legendary fish'
 
 class Location(Enum):
+    
+    hell = 'Hell'
 
     # In progress
     lake = 'the lake'
@@ -40,6 +46,9 @@ class Location(Enum):
     # Not made yet
     pond = 'the pond'
     overpass = 'the overpass'
+
+    # dev
+    blank = 'BLANK'
 
 class Fly(Enum):
     
