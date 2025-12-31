@@ -50,7 +50,7 @@ I currently have two locations: **The Dells** and **Chicago**. However, it might
 
 Would need to be location-based.
 # Next steps
-- Migrate to Textual TUI
+- Migrate to Godot UI
 - ADD CRAFTING!!!
 - Add fish journal
 - Add passage of time

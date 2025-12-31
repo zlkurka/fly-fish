@@ -59,6 +59,7 @@ class Fly(Enum):
 
     # New
     magnet = 'magnet'
+    soul = 'soul fragment'
 
     # Dev
     dev = 'DEV'

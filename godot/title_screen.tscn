@@ -1,12 +1,15 @@
-[gd_scene format=3 uid="uid://b2vf1q1cke0cb"]
+[gd_scene load_steps=2 format=3 uid="uid://p0amlvnpeksg"]
 
-[node name="Main Menu" type="Control"]
+[ext_resource type="Script" uid="uid://daejnwvtclrgt" path="res://title_screen.gd" id="1_v6p8y"]
+
+[node name="Title Screen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_v6p8y")
 
 [node name="TitleText" type="Label" parent="."]
 layout_mode = 1
@@ -42,6 +45,7 @@ alignment = 2
 
 [node name="StartButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../QuitButton")
 text = "Start"
 
 [node name="OptionsButton" type="Button" parent="VBoxContainer"]
@@ -50,4 +54,8 @@ text = "Options"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../StartButton")
 text = "Quit"
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
