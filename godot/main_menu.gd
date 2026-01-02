@@ -10,6 +10,7 @@ func _ready():
 func _process(_delta: float) -> void:
 	pass
 
-
+func _on_fishing_button_pressed():
+	get_tree().change_scene_to_file("res://fishing.tscn")
 func _on_quit_button_pressed():
 	get_tree().change_scene_to_file("res://title_screen.tscn")

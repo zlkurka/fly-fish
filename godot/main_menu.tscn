@@ -67,6 +67,7 @@ text = "End day"
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../FishingButton")
-text = "Quit to main menu"
+text = "Quit to title screen"
 
+[connection signal="pressed" from="VBoxContainer/FishingButton" to="." method="_on_fishing_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

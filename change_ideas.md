@@ -5,13 +5,14 @@
 - Pixel graphics (will probably have to enlist some help)
 ## Modifications
 ### Market
-- What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
+What if it was inspired by the Pike Place Market? Idk how but that'd be cool.
 #### Fishmonger
 - Only allow buying of fish from locations the player has unlocked? Maybe I can use the list of each fish type the player has caught for this.
 ## Additions
 ### Time
 Right now, you can just fish forever and refresh a shop just by returning to the main menu. I need days to pass, and for that I need there to be a cost for time passing, which is probably food and/or the encroach of doom.
 - During the early morning and at night, larger fish are closer to the surface, whereas in the midday they're closer to the water
+- Passage of time based on cast time, travel
 ### Powerups
 - **Dissolving melatonin**: makes fish sleepy? (I'm not really sure what this would do)
 ### Crafting
