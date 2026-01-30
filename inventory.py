@@ -5,7 +5,7 @@ from fish_data import fish_pools, fish_values, powerup_casts, fly_odds, fly_time
 class Inventory:
   
     # Setup inventory
-    money: float = 0
+    money: int = 0
 
     fish: dict = {}
     sus_fish: dict = {}

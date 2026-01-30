@@ -28,20 +28,20 @@ class FishType(Enum):
     biblical_angel = 'biblically accurate angelfish'
 
     # Dev
-    common_fish = 'common fish'
-    uncommon_fish = 'uncommon fish'
-    rare_fish = 'rare fish'
-    super_rare_fish = 'super rare fish'
-    legendary_fish = 'legendary fish'
+    common = 'common fish'
+    uncommon = 'uncommon fish'
+    rare = 'rare fish'
+    super_rare = 'super rare fish'
+    legendary = 'legendary fish'
 
 class Location(Enum):
     
+    quarry = 'the quarry'
     hell = 'Hell'
 
     # In progress
     lake = 'the lake'
     river = 'the river'
-    quarry = 'the quarry'
 
     # Not made yet
     pond = 'the pond'
@@ -60,6 +60,7 @@ class Fly(Enum):
     # New
     magnet = 'magnet'
     soul = 'soul fragment'
+    double = 'double'
 
     # Dev
     dev = 'DEV'
@@ -84,5 +85,9 @@ class Merchant(Enum):
 
     fishmonger = 'Fishmonger'
     drink_lady = 'Drink Lady'
+
+class Material(Enum):
+
+    hook = 'hook'
 
 item_enums = [FishType, Location, Fly, Powerup]

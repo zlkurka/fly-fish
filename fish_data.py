@@ -1,4 +1,4 @@
-from enums import FishType, Location, Rarity, Powerup, Fly, Merchant
+from enums import FishType, Location, Rarity, Powerup, Fly, Material
 
 # Fish
 
@@ -8,15 +8,15 @@ fish_pools = {
         Rarity.common: [FishType.trout],
         Rarity.uncommon: [FishType.smallmouth],
         Rarity.rare: [FishType.muskellunge],
-        Rarity.super_rare: [FishType.super_rare_fish],
-        Rarity.legendary: [FishType.legendary_fish],
+        Rarity.super_rare: [FishType.super_rare],
+        Rarity.legendary: [FishType.legendary],
     },
     Location.river: {
         Rarity.common: [FishType.trout],
         Rarity.uncommon: [FishType.salmon],
         Rarity.rare: [FishType.steelhead],
-        Rarity.super_rare: [FishType.super_rare_fish],
-        Rarity.legendary: [FishType.legendary_fish],
+        Rarity.super_rare: [FishType.super_rare],
+        Rarity.legendary: [FishType.legendary],
     },
     Location.quarry: {
         Rarity.common: [FishType.rock_fish],
@@ -33,11 +33,11 @@ fish_pools = {
         Rarity.legendary: [FishType.biblical_angel],
     },
     Location.blank: {
-        Rarity.common: [FishType.common_fish],
-        Rarity.uncommon: [FishType.uncommon_fish],
-        Rarity.rare: [FishType.rare_fish],
-        Rarity.super_rare: [FishType.super_rare_fish],
-        Rarity.legendary: [FishType.legendary_fish],
+        Rarity.common: [FishType.common],
+        Rarity.uncommon: [FishType.uncommon],
+        Rarity.rare: [FishType.rare],
+        Rarity.super_rare: [FishType.super_rare],
+        Rarity.legendary: [FishType.legendary],
     },
 }
 
@@ -131,11 +131,11 @@ fish_values = {
     FishType.gold_fish: 50,
 
     # Dev
-    FishType.common_fish: 5,
-    FishType.uncommon_fish: 10,
-    FishType.rare_fish: 15,
-    FishType.super_rare_fish: 25,
-    FishType.legendary_fish: 100,
+    FishType.common: 5,
+    FishType.uncommon: 10,
+    FishType.rare: 15,
+    FishType.super_rare: 25,
+    FishType.legendary: 100,
             
 }
 
@@ -159,5 +159,21 @@ powerup_casts = {
 
 recipes = {
     
-    Powerup.gold_flakes: {FishType.gold_fish: 1}
+    # Powerups
+
+    Powerup.gold_flakes: [
+        {FishType.gold_fish: 1},
+    ],
+
+
+    # Flies
+
+    Fly.double: [
+        {Material.hook: 2},
+    ],
+    Fly.gold: [
+        {Material.hook: 1},
+        {Powerup.gold_flakes: 5},
+    ],
+
 }
